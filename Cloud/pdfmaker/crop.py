@@ -39,10 +39,8 @@ Builder.load_string('''
         size_hint_y: None
         height: '40dp'
         Button:
-            text: 'Cancel'
-        Button:
             text: 'Crop'
-            on_release: root.crop_image('croped.png')
+            on_release: root.crop_image()
 
 
 <Croper>:
@@ -389,7 +387,7 @@ class ImageCroper(BoxLayout):
     def on_source(self, *a):
         self.croper.image_cls.reload()
 
-    def crop_image(self, path):
+    def crop_image(self):
         box, img = self.croper.get_box()
         img_crop = img.crop(box)
         img_crop.save(path)

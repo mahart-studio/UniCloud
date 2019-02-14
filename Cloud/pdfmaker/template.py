@@ -132,9 +132,6 @@ class UniCloudPdf(FPDF):
 
 if __name__ == '__main__':
 
-#    from fpdf import FPDF
-
-#    pdf=FPDF()
     pdf=UniCloudPdf()
 
     #make an instance of the Template class

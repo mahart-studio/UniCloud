@@ -28,7 +28,7 @@ from mahartstudios.widgets.alertpopup import AlertPopup
 if platform == 'android':
 	from mahartstudios.android.notification import fast_toast
 
-# from template import Templates, UniCloudPdf
+from template import Templates, UniCloudPdf
 from .crop import ImageCroper
 from .filechooser import ThumbChooser
 

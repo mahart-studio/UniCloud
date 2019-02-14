@@ -216,11 +216,11 @@ firstpage_kv = '''
             FloatLayout:
                 MyCarousel
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(1).jpg'
+                        source: 'data/showcase/Screenshot(1).png'
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(2).jpg'
+                        source: 'data/showcase/Screenshot(2).png'
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(7).jpg'
+                        source: 'data/showcase/Screenshot(7).png'
             FloatLayout:
                 size_hint_y: None
                 height: '60dp'
@@ -243,9 +243,9 @@ firstpage_kv = '''
                 center: root.center
                 MyCarousel
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(4).jpg'
+                        source: 'data/showcase/Screenshot(4).png'
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(5).jpg'
+                        source: 'data/showcase/Screenshot(5).png'
             FloatLayout:
                 size_hint_y: None
                 height: '60dp'
@@ -267,11 +267,11 @@ firstpage_kv = '''
             FloatLayout:
                 MyCarousel
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(3).jpg'
+                        source: 'data/showcase/Screenshot(3).png'
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(6).jpg'
+                        source: 'data/showcase/Screenshot(6).png'
                     AsyncImage:
-                        source: 'data/showcase/Screenshot(8).jpg'
+                        source: 'data/showcase/Screenshot(8).png'
             FloatLayout:
                 size_hint_y: None
                 height: '60dp'
