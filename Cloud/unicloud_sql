@@ -1,0 +1,84 @@
+/* Creating Tables */
+
+Create Table User_data(
+User_id Int Unsigned Not Null Auto_increment Primary Key,
+Matric_number Varchar(30) Not Null,
+User_name Varchar(30) Not Null,
+Email VarChar(30) not Null,
+user_password Varchar(30) Not Null
+);
+
+Create Table Materials(
+material_id Int Unsigned Not Null Auto_increment Primary Key,
+file_name Varchar(40) Not Null,
+file_size Varchar(20) Not NUll,
+google_id Varchar(40) Not Null,
+department_id Int Unsigned Not Null,
+faculty_id Unsigned Not Null,
+author_id Unsigned Not NUll,
+course_id Unsigned Not Null,
+posted_time date Not Null,
+material_type Enum('Course Material', 'Assignment', 'Class Note', 'Exam', 'Test') Not Null
+);
+
+Create Table Department(
+department_id Int Unsigned Not Null Auto_increment Primary Key,
+department_name Varchar(30),
+faculty_id Int Unsigned Not Null
+);
+
+Create Table Faculty(
+faculty_id Int Unsigned Not Null Auto_increment Primary Key,
+faculty_name Varchar(30) Not Null
+);
+
+Create Table Courses(
+course_id Int Unsinged Not Null Auto_increment Primary Key,
+course_code Varchar(7) Not Null Primary Key,
+course_title Varchar(40) Not Null,
+faculty_id Int Unsigned Not Null,
+department_id Int Unsigned Not Null
+);
+
+
+
+/* Inserting Values */
+Insert into User_data values(
+(Null, '160407012', 'Avour123', 'Avour123@gmail.com', '123password')
+);
+
+select faculty_id from Faculty where faculty_name == get_the_name;
+select department_id from Department department_name == get_the_name; 
+/* you can store the user id localy when he logs in */
+
+Insert into Materials Values(
+(Null, 'Unicloud.pdf', '3derasdb29w973fgqd', dept_id, fal_id, author_id, date(), 'Class Note')
+);
+
+
+Insert into Department values(
+(Null, 'Systems Engineering', fal_id)
+);
+
+Insert into Faculty values(
+(Null, 'Engineering')
+);
+
+Insert into Courses values(
+('EEG 104', 'Intro to Electrical Engineering', fal_id, dept_id)
+);
+
+/* Basic Query */
+
+/* find all materials that belongs to a particular courses */
+Select Materials.* from Materials Inner Join Courses On Materials.course_code = Courses.course_code where Courses.course_code = 'EEG 104';
+
+
+
+/* Search for courses */
+Select * From Courses Where course_code Like '%value%' Or course_title Like '%value%';
+
+
+/* Search for material */
+Select * From Materials Where material_name Like '%value%' or file_name Like '%value%';
+

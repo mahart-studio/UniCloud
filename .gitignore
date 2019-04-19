@@ -1,0 +1,12 @@
+*.png
+*.jpg
+*.jpeg
+*.pyc
+*.zip
+*.gif
+to-do.txt
+__pycache__/
+.vscode/
+libs/
+data/
+fonts/

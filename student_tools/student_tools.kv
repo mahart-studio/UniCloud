@@ -1,0 +1,978 @@
+#:import Factory kivy.factory.Factory
+#:import ScreenManager kivy.uix.screenmanager
+#:import Screen kivy.uix.screenmanager
+#:import Popup kivy.uix.popup
+#:import Window kivy.core.window
+#:import Effects mahartstudios.effects.Effects
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import os.path, os
+
+<Label>:
+    font_name: 'comic'
+	color: 0,0,0,1
+
+<Result_Button>:
+    size_hint: (1, None)
+    height: '60dp'
+    background_normal: ''
+    background_color: (1, 1, 1, 1)
+    gp: ''
+    time: ''
+    gp_values: []
+    canvas.after:
+        Color:
+            rgba: .8, .8, .8, .6
+        Line:
+            points: [self.x+10, self.y, self.width-10, self.y]
+            width: 1.5
+    BoxLayout:
+        size: self.parent.size
+        pos: self.parent.pos
+        Image:
+            size_hint: (.2, 1)
+            source: 'ic_action_box.png'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: root.gp
+                font_size: '16dp'
+                text_size: self.size
+                valign: 'middle'
+                halign: 'left'
+                padding: '16dp', 0
+                color: (.2, .2, .2, 1)
+            Label:
+                text: root.time
+                id: sum_display
+                font_size: '13dp'
+                text_size: self.size
+                valign: 'middle'
+                halign: 'left'
+                padding: '16dp', 0
+                color: (.7, .7, .7, 1)
+	BoxLayout:
+		size_hint_y: None
+		height: '40dp'
+		FloatLayout:
+			BorderButton:
+				pos_hint: {'center_y':.5,'center_x':.7}
+				size_hint: (None,None)
+				size: '80dp','30dp'
+				text: 'Delete'
+				on_release: root.delete()
+		FloatLayout:
+			BorderButton:
+				size_hint: (None,None)
+				size: '80dp','30dp'
+				pos_hint: {'center_y':.5,'center_x':.3}
+				text: 'View'
+				on_release: root.load()
+
+<CustButton@Button>:
+    background_normal: ''
+    color: (1, 1, 1, 1)
+    background_color: get_color_from_hex('#FF9966')
+
+<TogBtn@ToggleButton>:
+    background_normal: ''
+    color: (1, 1, 1, 1)
+    background_color: get_color_from_hex('#FF9966')
+    allow_no_selection: False
+
+<ImgBtn@Button>:
+    source: ''
+    background_normal: ''
+    color: (1, 1, 1, 1)
+    background_color: get_color_from_hex('#FF9966')
+
+    Image:
+        pos: self.parent.pos
+        size: self.parent.size
+        source: self.parent.source
+
+<comfirm_pop>:
+    title_font: '0dp'
+    seperator_height: '0dp'
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Are sure you want to delete the whole list'
+        BoxLayout:
+            padding: 10
+            spacing: 10
+            CustButton:
+                text: 'Cancel'
+                on_release: root.dismiss()
+            CustButton:
+                text: 'Ok'
+                background_color: (.2, .5, 1, 1)
+                on_release: root.delete_all()
+
+
+<Home_page>:
+    name: 'home_page'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
+            ImgBtn:
+                size_hint: None, 1
+                size: '32dp', '32dp'
+                on_release: app.root.toggle_state(True)
+                source: 'ic_action_list.png'
+                pos_hint: {'center_x': .7, 'center_y': .5}
+
+            Label:
+                text: 'Mahart'
+                font_size: '22dp'
+                text_size: self.size
+                halign: 'center'
+                valign: 'center'
+                bold: True
+
+        AndroidTabs:
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            anim_threshold: 0
+            MyTab:
+                text: 'Time Table Generator'
+                BoxLayout:
+                    orientation: 'vertical'
+                    CustButton:
+                        on_release: root.manager.current ='lecture_page'
+                        background_color: 1, 1, 1, 1
+                        canvas.after:
+                            Color:
+                                rgba: get_color_from_hex('#FF996666')
+                            Line:
+                                points: [self.x, self.y, self.width, self.y]
+                                width: 1.5
+
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size: self.parent.size
+                            pos: self.parent.pos
+                            Image:
+                                source: 'ic_action_business (2).png'
+                            Label:
+                                size_hint_y: .6
+                                color: .2, .5, 1, 1
+                                text: 'Generate Lecture Time Table'
+                    CustButton:
+                        background_color: 1, 1, 1, 1
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size: self.parent.size
+                            pos: self.parent.pos
+                            Image:
+                                source: 'ic_action_calendar_day.png'
+                            Label:
+                                size_hint_y: .6
+                                color: .2, .5, 1, 1
+                                text: 'Generate Exam Time Table'
+
+            MyTab:
+                text: 'Time Table View'
+                Label:
+                    text: 'No Time Table Generated'
+                    color: 0, 0, 0, .6
+
+
+<CalculatorHome>:
+    name: 'calculator_home'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            size_hint: (1, None)
+            height: '110dp'
+            effect: Effects(self).add_shadow()
+            ImgBtn:
+                size_hint: None, 1
+                size: '32dp', '32dp'
+                on_release: root.manager.manager.go_to_page('home_page')
+                source: 'arrow_back1.png'
+                pos_hint: {'top': 1}
+
+            Label:
+                size_hint_y: None
+                text_size: self.size
+                valign: 'middle'
+                color: 1,1,1,1
+                halign: 'center'
+                text: 'Gp Calculator'
+                font_size: '22dp'
+                bold: True
+
+        BoxLayout:
+            orientation: 'vertical'
+            CustButton:
+                id: calc_btn
+                on_release: root.manager.current = 'calc_page'
+                canvas.after:
+                    Color:
+                        rgba: .2, .5, 1, .4
+                        rgba: get_color_from_hex('#FF9966')
+                    Line:
+                        points: [self.x, self.y, self.width, self.y]
+                        width: 1.5
+
+                background_color: 1, 1, 1, 1
+                BoxLayout:
+                    orientation: 'vertical'
+                    size: self.parent.size
+                    pos: self.parent.pos
+                    Image:
+                        source: 'ic_action_calculator2.png'
+                    Label:
+                        size_hint_y: .6
+                        color: .2, .5, 1, 1
+                        text: 'Calculate Gp'
+            CustButton:
+                id: result_btn
+                background_color: 1, 1, 1, 1
+                BoxLayout:
+                    orientation: 'vertical'
+                    size: self.parent.size
+                    pos: self.parent.pos
+                    Image:
+                        source: 'ic_action_tv.png'
+                    Label:
+                        size_hint_y: .6
+                        color: .2, .5, 1, 1
+                        text: 'View Result List'
+
+
+<CalculatorPage>:
+    name: 'calculator'
+
+
+<GpCalculator>:
+    name: 'calc_page'
+    FloatLayout:
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex('#FF9966')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            orientation: 'vertical'
+            BoxLayout:
+                size_hint: (1, None)
+                height: '50dp'
+                ImgBtn:
+                    size_hint: None, None
+                    size: '40dp', '32dp'
+                    on_release: root.manager.current = 'calculator_home'
+                    source: 'arrow_back1.png'
+                    pos_hint: {'center_x': .7, 'center_y': .5}
+
+                Label:
+                    text: 'Calculate GP'
+                    font_size: '20dp'
+                    bold: True
+                    color: 1,1,1,1
+                ImgBtn:
+                    id: calc_option
+                    on_release: #A bubble or something
+                    size_hint: None, 1
+                    size: '32dp', '32dp'
+                    pos_hint: {'center_x': .3, 'center_y': .5}
+                    source: 'ic_action_overflow.png'
+
+            BoxLayout:
+                size_hint: (1, None)
+                height: '55dp'
+                effect: Effects(self).add_shadow()
+                Label:
+                    text: 'Courses:'
+                    color: 1,1,1,1
+                    Image:
+                        size_hint: (None, None)
+                        x: self.parent.x +8
+                        y: self.parent.y + 15
+                        size: '24dp', '24dp'
+                        source: 'ic_action_book.png'
+                Label:
+                    text: 'Units:'
+                    color: 1,1,1,1
+                    Image:
+                        size_hint: (None, None)
+                        x: self.parent.x +20
+                        y: self.parent.y + 14
+                        size: '24dp', '24dp'
+                        source: 'ic_action_bookmark2.png'
+                Label:
+                    text: 'Grades:'
+                    color: 1,1,1,1
+                    Image:
+                        size_hint: (None, None)
+                        x: self.parent.x +11
+                        y: self.parent.y + 14
+                        size: '24dp', '24dp'
+                        source: 'ic_action_ball.png'
+
+            ScrollView:
+                size_hint: (1, 1)
+                size: self.size
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                GridLayout:
+                    height: self.minimum_height
+                    id: grid_guy
+                    size_hint_y: None
+                    cols: 3
+                    spacing: 10
+                    padding: 10
+
+            CustButton:
+                size_hint: (None, None)
+                height: '50dp'
+                width: '100dp'
+                on_release: root.get_values()
+                pos_hint: {'center_x': .5}
+                Image:
+                    pos: self.parent.pos
+                    size: self.parent.size
+                    source: 'ic_action_tick.png'
+
+
+        Button:
+            size_hint: (None, None)
+            size: ('40dp', '40dp')
+            pos:  root.width-70, '60dp'
+            on_release: root.add_btn()
+            background_color: (.2, .5, 1, 0)
+            background_normal: ''
+            canvas:
+                Color:
+                    rgba: get_color_from_hex('#FF9966')
+                Ellipse:
+                    size: self.size
+                    pos: self.pos
+            Image:
+                pos: self.parent.pos
+                size: self.parent.size
+                source: 'add.png'
+
+
+<Result_list>:
+    name: 'result_list_page'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
+            effect: Effects(self).add_shadow()
+            ImgBtn:
+                size_hint: None, None
+                size: '32dp', 1
+                source: 'arrow_back1.png'
+                pos_hint: {'center_x': .7, 'center_y': .5}
+                on_release: root.manager.current = 'calculator_home'
+
+            Label:
+                text: 'Result History List'
+                font_size: '19dp'
+
+            Button:
+                id: option
+                size_hint: None, None
+                size: '32dp', '32dp'
+                pos_hint: {'center_x': .3, 'center_y': .5}
+                background_normal: 'ic_action_overflow.png'
+
+        ScrollView:
+            size_hint: (1, 1)
+            size: self.size
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            GridLayout:
+                id: result_scroll
+                size_hint: (1, None)
+                cols: 1
+
+<Result_view>:
+    name: 'result_view_page'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
+            ImgBtn:
+                size_hint: None, 1
+                size: '32dp', '32dp'
+                source: 'arrow_back1.png'
+                on_release: root.manager.current = 'calculator_home'
+
+            Label:
+                text: 'Result View'
+                font_size: '19dp'
+
+            Button:
+                id: result_list_option
+                size_hint: None, None
+                size: '32dp', '32dp'
+                pos_hint: {'center_x': .3, 'center_y': .5}
+                background_normal: 'ic_action_overflow.png'
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: '100dp'
+            effect: Effects(self).add_shadow()
+            Label:
+                id: gp_view
+            BoxLayout:
+                Label:
+                    id: total_unit
+                Label:
+                    id: num_of_course
+
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            GridLayout:
+                id: grid_lay
+                size_hint_y: None
+                cols: 3
+                spacing: 10
+                padding: 10
+                height: self.minimum_height
+
+
+<PasswordPop>
+    size_hint: None, None
+    size: '280dp', '180dp'
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text_size: self.size
+            valign: 'middle'
+            halign: 'left'
+            padding: '20dp', '30dp'
+            text: 'Password'
+            bold: True
+            color: 0, 0, 0, 1
+            canvas:
+                Color:
+                    rgba: 0,0,0,.6
+                Line:
+                    points: [self.x+6, self.y, self.width-6, self.y]
+                    width: 1
+
+        TextInput:
+            size_hint_y: .7
+            id: password_value
+            focus: False
+            multiline: False
+            password: True
+            background_normal: 'textinput_disabled.png'
+            on_text_validate: root.comfirm_pass()
+
+        Label:
+            size_hint_y: 0.4
+            text: "Defaults to 0000 "
+            font_size: '12dp'
+            italics: True
+            id: password_state
+            color: (0, 0, 0, 1)
+
+        BoxLayout:
+            size_hint_y: None
+            height: '55dp'
+            padding: 6
+            Button:
+                text: "Cancel"
+                background_normal: ''
+                on_release: root.dismiss()
+                color: get_color_from_hex('#FF9966')
+            Button:
+                id: pass_btn
+                text: 'Ok'
+                color: get_color_from_hex('#FF9966')
+                background_normal: ''
+                on_release: root.comfirm_pass()
+
+
+<CustLabel@Label>:
+    font_size: '13dp'
+    text_size: self.size
+    valign: 'center'
+    halign: 'center'
+    color: 1,1,1,1
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex('#FF9966')
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+
+
+<Matrix_detector>:
+    name: 'detector_page'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
+            ImgBtn:
+                size_hint: None, None
+                size: '32dp', '32dp'
+                on_release: app.root.toggle_state(False); root.parent.go_to_page('home_page')
+                source: 'arrow_back1.png'
+                pos_hint: {'center_x': .7, 'center_y': .5}
+
+            Label:
+                text: 'Matric Detector'
+                font_size: '20dp'
+                bold: True
+                color: 1,1,1,1
+
+        BoxLayout:
+            effect: Effects(self).add_shadow()
+            size_hint_y: None
+            height: '40dp'
+            Label:
+                size_hint_x: None
+                width: dp(self.texture_size[0] + 10)
+                text: 'Matric Number'
+                font_size: '13dp'
+                color: 1,1,1,1
+            TextInput:
+                focus: True
+                id: matrix
+                multiline: False
+                on_text_validate: root.set_info(matrix.text)
+            ImgBtn:
+                id: calc_option
+                size_hint: None, 1
+                size: '32dp', '32dp'
+                source: 'ic_action_search.png'
+                on_release: root.set_info(matrix.text)
+
+        BoxLayout:
+            id: add_box
+            orientation: 'vertical'
+            padding: 20
+            spacing: 20
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            BoxLayout:
+                padding: 20
+                spacing: 10
+                CustLabel:
+                    font_size: 16
+                    size_hint: (.8, 1)
+                    BoxLayout:
+                        size: self.parent.size
+                        pos: self.parent.pos
+                        Image:
+                            size_hint_x: .2
+                            source: 'ic_action_calendar.png'
+                        Label:
+                            text: 'Year Of Entry'
+                            halign: 'left'
+                            color: 1,1,1,1
+                            font_size: '16dp'
+
+                CustLabel:
+                    id: year_display
+
+            BoxLayout:
+                padding: 20
+                spacing: 10
+                CustLabel:
+                    font_size: 16
+                    size_hint: (.8, 1)
+                    BoxLayout:
+                        size: self.parent.size
+                        pos: self.parent.pos
+                        Image:
+                            size_hint_x: .2
+                            source: 'ic_action_database.png'
+                        Label:
+                            font_size: '16dp'
+                            color: 1,1,1,1
+                            text: 'Level'
+                            halign: 'left'
+                CustLabel:
+                    id: level_display
+
+            BoxLayout:
+                padding: 20
+                spacing: 10
+                CustLabel:
+                    font_size: 16
+                    size_hint: (.8, 1)
+                    BoxLayout:
+                        size: self.parent.size
+                        pos: self.parent.pos
+                        Image:
+                            size_hint_x: .2
+                            source: 'ic_action_bus.png'
+                        Label:
+                            text: 'Department'
+                            color: 1,1,1,1
+                            font_size: '16dp'
+                            halign: 'left'
+                CustLabel:
+                    id: department_display
+
+            BoxLayout:
+                padding: 20
+                spacing: 10
+                CustLabel:
+                    font_size: 16
+                    size_hint: (.8, 1)
+                    BoxLayout:
+                        size: self.parent.size
+                        pos: self.parent.pos
+                        Image:
+                            size_hint_x: .2
+                            source: 'ic_action_lab.png'
+                        Label:
+                            text: 'Falculty'
+                            color: 1,1,1,1
+                            font_size: '16dp'
+                            halign: 'left'
+                CustLabel:
+                    id: falculty_display
+
+            BoxLayout:
+                padding: 20
+                spacing: 10
+                CustLabel:
+                    font_size: 16
+                    size_hint: (.8, 1)
+                    BoxLayout:
+                        size: self.parent.size
+                        pos: self.parent.pos
+                        Image:
+                            size_hint_x: .2
+                            source: 'ic_action_location.png'
+                        Label:
+                            text: 'Position'
+                            font_size: '16dp'
+                            color: 1,1,1,1
+                            halign: 'left'
+                CustLabel:
+                    id: position_display
+
+
+<Settings_password>:
+    name: 'setting_page'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex('#FF9966')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: (1, None)
+            height: '60dp'
+            effect: Effects(self).add_shadow()
+            ImgBtn:
+                size_hint: None, None
+                size: '32dp', '32dp'
+                source: 'arrow_back1.png'
+                pos_hint: {'center_x': .7, 'center_y': .5}
+                on_release: root.manager.current = 'settings page'
+
+            Label:
+                text: 'Change Password'
+                font_size: '19dp'
+                bold: True
+
+            Switch:
+                id: password_switch
+                size_hint: (None, None)
+                pos_hint: {'center_X': .5, 'center_y': .5}
+                height: '18dp'
+                width: '66dp'
+                active: True
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Label:
+                text: 'Old Password:'
+                color: (0, 0, 0, 1)
+            TextInput:
+                id: old_password
+                multiline: False
+                password: True
+
+            Label:
+                text: 'New Password:'
+                color: (0, 0, 0, 1)
+            TextInput:
+                id: new_password
+                multiline: False
+                on_text: root.set_warning()
+                password: True
+
+            BoxLayout:
+                Label:
+                    size_hint_x: 0.55
+                    text: 'Comfirm Password:'
+                    color: (0, 0, 0, 1)
+                Label:
+                    id: warning
+                    color: (1, .2, .2, 1)
+            TextInput:
+                id: comfirm_password
+                multiline: False
+                on_text: root.set_warning()
+                password: True
+
+        CustButton:
+            size_hint_y: None
+            height: '50dp'
+            text: 'Ok'
+            on_release: root.set_password()
+
+
+<Settings>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex('#FF9966')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
+            effect: Effects(self)
+            on_size: self.effect.add_shadow()
+            ImgBtn:
+                size_hint: None, None
+                size: '32dp', 1
+                on_release: app.root.toggle_state(True)
+                source: 'ic_action_list.png'
+                pos_hint: {'center_x': .7, 'center_y': .5}
+
+            Label:
+                text: 'Settings'
+                font_size: '19dp'
+                bold: True
+
+        ScrollView:
+            size_hint: (1, 1)
+            size: self.size
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            GridLayout:
+                size_hint_y: None
+                cols: 1
+                spacing: 10
+                SettingBtn:
+                    id: pass_btn
+                    on_release: root.manager.current = 'set_password_page'
+                    text: '[size=18dp]Time Table[/size]\n[i][size=14dp][color=#666666]Time Table Settings[/color][/size][/i]'
+                SettingBtn:
+                    id: pass_btn
+                    on_release: root.manager.current = 'set_password_page'
+                    text: '[size=18dp]Gp Calculator[/size]\n[i][size=14dp][color=#666666]Calculator Settings[/color][/size][/i]'
+                SettingBtn:
+                    id: pass_btn
+                    on_release: root.manager.current = 'set_password_page'
+                    text: '[size=18dp]Matric Detector[/size]\n[i][size=14dp][color=#666666]Detector Settings[/color][/size][/i]'
+                SettingBtn:
+                    id: pass_btn
+                    on_release: root.manager.current = 'set_password_page'
+                    text: '[size=18dp]Password[/size]\n[i][size=14dp][color=#666666]change and set password[/color][/size][/i]'
+
+
+
+<SettingBtn@CustButton>:
+    background_color: (1, 1, 1, 1)
+    id: pass_btn
+    size_hint_y: None
+    height: '60dp'
+    markup: True
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.size
+    color: (0, 0, 0, 1)
+    padding: '40dp', 0
+    pad: 10
+    canvas.after:
+        Color:
+            rgba: .5,.5,.5,1
+        Line:
+            points: [self.x+self.pad, self.y, self.x+self.width-self.pad, self.y]
+
+<Lecture_time_table>:
+    name: 'lecture_page'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        BoxLayout:
+            size_hint_y: None
+            height: '60dp'
+            shadow: Effects(self).add_shadow()
+            Label:
+                color: 0,0,0,1
+                text: 'Time'
+            Label:
+                color: 0,0,0,1
+                text: 'Course Code'
+            Label:
+                color: 0,0,0,1
+                text: 'Venue'
+        ScrollView:
+            GridLayout:
+                id: grid
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+
+<MyDropDown@DropDown>:
+	canvas.after:
+		Color:
+			rgba: .8,.8,.8,1
+		Line:
+			rounded_rectangle: [self.x, self.y, self.width, self.height,4]
+
+<MySpinner@Spinner>:
+    size_hint: (.6, .6)
+    sync_height: True
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    size_hint_y: None
+    height:'50dp'
+    background_normal: 'spinner.png'
+
+
+<TimeTableButton>:
+    drop_container: drop_container
+    size_hint_y:  None
+    height: '60dp'
+    day: 'Monday'
+    fold_anim: 'in_quad'
+    drop_anim: 'out_bounce'
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        Label:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex('#FFE099')
+                Ellipse:
+                    size: 50, 50
+                    pos: self.center_x-25, self.center_y-25
+            size_hint_x: None
+            width: '100dp'
+            text: root.day[:3]
+            font_size: '12dp'
+            color: get_color_from_hex('#666666')
+        Label:
+            text_size: self.size
+            halign: 'left'
+            valign: 'center'
+            text: root.day
+            markup: True
+    BoxLayout:
+        id: drop_container
+        orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                size: self.size
+                pos: self.pos

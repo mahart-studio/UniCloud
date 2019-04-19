@@ -1,0 +1,54 @@
+SetingsScreen:
+    name: 'settings_page'
+    BoxLayout:
+        ScrollView:
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                SettingButton:
+                SettingButton:
+                SettingButton:
+                SettingButton:
+                SettingButton:
+                SettingButton:
+
+<SetingsScreen@Screen>:
+
+
+<SettingButton@NormalButton>:
+    size_hint_y: None
+    height: '64dp'
+    on_release:
+        if switch.state =='normal': switch.state ='down'
+        else: switch.state = 'normal'
+    BoxLayout:
+        pos: root.pos
+        size: root.size
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Setting'
+                color: 0,0,0,1
+                bold: True
+                font_size: '16dp'
+            Label:
+                text: 'Type Of settings'
+                color: .5,.5,.5,1
+                font_size: '13dp'
+        MySwitch:
+            id: switch
+            size_hint_x: None
+            width: '64dp'
+            down_source: 'Data/Image/switch_off.png'
+            normal_source: 'Data/Image/switch_on.png'
+
+
+
+<MySwitch@ToggleButtonBehavior+Image>:
+    down_source: ''
+    normal_source: ''
+    on_state:
+        if self.state == 'down': self.source = self.down_source
+        else: self.source = self.normal_source
+
