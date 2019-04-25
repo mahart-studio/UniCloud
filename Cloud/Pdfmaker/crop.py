@@ -153,7 +153,7 @@ class CropImage(Image):
 
 class Croper(FloatLayout):
     
-    source = StringProperty('/root/g.png')
+    source = StringProperty('/root/ed_artwork.jpg')
 
     v1_points = ListProperty([])  # give it a defualt value to avoid an IndexError
     v2_points = ListProperty([1,1,1,1])
@@ -210,7 +210,8 @@ class Croper(FloatLayout):
                     self.start = True
                     self.touched_child = child
                     self.start_pos = child.pos
-        return True
+
+        return super(Croper, self).on_touch_down(touch)
 
 
     def on_touch_move(self, touch):
@@ -284,12 +285,12 @@ class Croper(FloatLayout):
 
                 self.touched_child.center_y = touch.pos[1]           
 
-        return True
+        return super(Croper, self).on_touch_down(touch)
 
     def on_touch_up(self, touch):   
         self.start = False
         #self.catch_restriction()
-        return True
+        return super(Croper, self).on_touch_down(touch)
 
     def catch_restriction(self):
         size = self.crop_image.texture_size
@@ -374,20 +375,23 @@ class RootCroper(BoxLayout):
     source = StringProperty('')
     image_cls = ObjectProperty()
 
+    def __init__(self, **k):
+        super(RootCroper, self).__init__(**k)
+        Clock.schedule_once(self.add_croper)
+        
+    def add_croper(self, dt):
+        self.croper = Croper()
+        self.add_widget(self.croper)
+        
 
     def crop_image(self, path):
-        box, img = croper.get_box()
+        box, img = self.croper.get_box()
         img_crop = img.crop(box)
         img_crop.save(path)
 
 
-root_croper =  RootCroper()
 
-croper = Croper()
-root_croper.add_widget(croper)
-b = BoxLayout()
-b.add_widget(root_croper)
 
 if __name__ == '__main__':
     from kivy.base import runTouchApp
-    runTouchApp(b)
+    runTouchApp(RootCroper())
