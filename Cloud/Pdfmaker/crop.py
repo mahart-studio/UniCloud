@@ -34,7 +34,7 @@ Builder.load_string('''
             pos: self.pos
 
 
-<RootCroper>:
+<ImageCroper>:
     BoxLayout:
         size_hint_y: None
         height: '40dp'
@@ -153,7 +153,7 @@ class CropImage(Image):
 
 class Croper(FloatLayout):
     
-    source = StringProperty('/root/ed_artwork.jpg')
+    source = StringProperty('')
 
     v1_points = ListProperty([])  # give it a defualt value to avoid an IndexError
     v2_points = ListProperty([1,1,1,1])
@@ -180,7 +180,10 @@ class Croper(FloatLayout):
         self.touched_child = None
         self.start_pos = None
 
-        Clock.schedule_once(self.set_init_value, .2)
+        Clock.schedule_once(self.set_init_value)
+
+    def on_source(self, *a):
+        Clock.schedule_once(self.set_init_value)
 
     def set_init_value(self, dt):
         size = self.crop_image.texture_size
@@ -370,19 +373,21 @@ class Croper(FloatLayout):
         return (upper, left, lower, rigth), img
         
 
-class RootCroper(BoxLayout):
-    orientation =  'vertical'
-    source = StringProperty('')
-    image_cls = ObjectProperty()
+class ImageCroper(BoxLayout):
+    source = StringProperty('/root/ed_artwork.jpg')
 
     def __init__(self, **k):
-        super(RootCroper, self).__init__(**k)
+        super(ImageCroper, self).__init__(**k)
+        self.orientation =  'vertical'
         Clock.schedule_once(self.add_croper)
         
     def add_croper(self, dt):
-        self.croper = Croper()
+        self.croper = Croper(source=self.source)
+        self.bind(source=self.croper.setter('source'))
         self.add_widget(self.croper)
-        
+
+    def on_source(self, *a):
+        self.croper.image_cls.reload()
 
     def crop_image(self, path):
         box, img = self.croper.get_box()
@@ -394,4 +399,12 @@ class RootCroper(BoxLayout):
 
 if __name__ == '__main__':
     from kivy.base import runTouchApp
-    runTouchApp(RootCroper())
+    from kivy.uix.button import Button
+    from kivy.uix.modalview import ModalView
+    mv = ModalView()
+    box = BoxLayout()
+    box.add_widget(ImageCroper())
+   
+    btn = Button()
+    btn.bind(on_release=lambda *a: mv.open())
+    runTouchApp(box)

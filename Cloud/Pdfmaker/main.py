@@ -29,11 +29,10 @@ from mahartstudios.widgets.alertpopup import AlertPopup
 
 # from mahartstudios.android.api import fast_toast
 
-from template import Templates, UniCloudPdf
-from crop import Croper, RootCroper, root_croper
+# from template import Templates, UniCloudPdf
+from .crop import ImageCroper
 
 #External Modules
-from fpdf import FPDF
 from PIL import Image as PilImage
 from PIL import ImageEnhance
 
@@ -94,9 +93,7 @@ class PdfScreens(ScreenManager):
 		self.image_viewer = ImageViewer()
 		self.rotate_modal = RotateModal(apply_rotate=self.apply_rotate)
 		self.crop_modal = CropModal()
-#		self.crop_modal.add_widget(root_croper)
 
-		#bind the choose picture button
 		choose_picture = self.page_options.choose_pic_btn
 		choose_picture.bind(on_release=partial(self.go_page, 'file'))
 
@@ -715,6 +712,19 @@ class PdfScreens(ScreenManager):
 	def pic_taken(self, fn, *args):
 		self.add_more([fn])
 
+	def crop_manager(self):
+
+		if self.selected is None:
+			print('[Error  ]  No valid selection')
+		else:
+			if self.selected.type == 'pdf_image':
+				self.crop_modal.open()
+				self.crop_modal.croper.source= self.get_real_image(self.selected.source)
+
+			else:
+				print('Toast can\'t rotate a custom page')
+
+
 
 class SavedProjectButton(DropButton):
 	load = ObjectProperty()
@@ -826,17 +836,18 @@ class RotateModal(ModalView):
 	apply_rotate = ObjectProperty()
 
 class CropModal(ModalView):
-	source_image = StringProperty('')
+
+	croper = ObjectProperty(None)
 
 	def __init__(self, **kwargs):
 		super(CropModal, self).__init__(**kwargs)
-		# root =  RootCroper()
+		self.croper =  ImageCroper()
+		Clock.schedule_once(self.add_image_croper,1)
+		
+	def add_image_croper(self, *a):
+		self.add_widget(self.croper)
 
-		# self.croper = Croper()
-		# self.croper.source =  '/root/g.png'
 
-		# root.add_widget(self.croper)
-		# self.add_widget(root_croper)
 
 
 class SaveModal(ModalView):

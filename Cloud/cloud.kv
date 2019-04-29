@@ -826,7 +826,7 @@ NavigationDrawer:
 
 <SearchPage>:
     on_pre_enter: root.manager.parent.allow_touch_drag= False
-    on_enter: search_input.focus = True
+    # on_enter: search_input.focus = True
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -857,7 +857,6 @@ NavigationDrawer:
                 background_active: ''
                 background_normal: ''
                 background_color: get_color_from_hex('#FF9966')
-                focus: True
                 hint_text: 'Search'
                 multiline: False
                 foreground_color: .3,.3,.3,1
@@ -1242,8 +1241,7 @@ NavigationDrawer:
     background_active: ''
     background_normal: ''
     background_color: get_color_from_hex('#FF9966')
-    focus: True
-    text: 'Search'
+    # focus: True
     multiline: False
     color: 1,1,1,1
     padding: '20dp', '14dp',0,0
@@ -1391,7 +1389,7 @@ NavigationDrawer:
             size_hint_y: None
             height: '50dp'
             CustomInput:
-                on_focus: if self.text.lower() == 'password': self.text = ''
+                hint_text: 'password'
                 text: 'Password'
                 password: True
                 id: password
@@ -1410,7 +1408,7 @@ NavigationDrawer:
             size_hint_y: None
             height: '50dp'
             CustomInput:
-                on_focus: if self.text.lower() == 'password': self.text = ''
+                hint_text: 'password'
                 text: 'Password'
                 password: True
                 id: re_enter

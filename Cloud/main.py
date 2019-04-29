@@ -29,11 +29,12 @@ import os, os.path
 
 # Mahart Studio Widget
 from mahartstudios.widgets.buttons import IconButton, RetainButton, NormalButton
-from Pdfmaker.main import PdfMaker
+from mahartstudios.widgets.autocarousel import AutoCarousel
+from .Pdfmaker.main import PdfMaker
 
 # student tools screen
-from student_tools.tools import get_screens
-external_pages = get_screens()
+# from student_tools.tools import get_screens
+# external_pages = get_screens()
 
 class MyTab(BoxLayout, AndroidTabsBase):
     pass
@@ -301,12 +302,13 @@ class Manager(ScreenManager):
         self.home_page =  HomePage(name='home_page')
         self.add_widget(self.home_page)   # default first page
 
-        Clock.schedule_once(self.make_screen_obj,1)
+        Clock.schedule_once(self.make_screen_obj)
 
         Clock.schedule_once(self.create_store)
         Clock.schedule_once(lambda dt: self.set_first_page())
 
     def make_screen_obj(self,dt):
+        self.first_page = FirstPage(name='first_page')
         self.file_chooser = SelectFile(name = 'file_chooser')
         self.pdf_maker =  PdfMaker(name='pdf_maker')
         self.search_page = SearchPage(name= 'search_page')
@@ -325,6 +327,7 @@ class Manager(ScreenManager):
 
         app_cls = kivy.app.App.get_running_app()
         user_data_dir = app_cls.user_data_dir
+        print(user_data_dir)
 
         unicloud_store = JsonStore(os.path.join(user_data_dir, 'unicloud_store.json'))
         if not unicloud_store.exists('user'):
@@ -334,6 +337,7 @@ class Manager(ScreenManager):
         if unicloud_store.exists('user'):
             if unicloud_store.get('user')['first_time']:
                 self.go_to_page('first_page')
+                Clock.schedule_once(lambda dt: setattr(self, 'current', 'home_page'), 6)
             else:
                 # self.current= 'pdf maker'
                 pass

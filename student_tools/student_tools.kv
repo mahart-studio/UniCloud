@@ -523,7 +523,6 @@
         TextInput:
             size_hint_y: .7
             id: password_value
-            focus: False
             multiline: False
             password: True
             background_normal: 'textinput_disabled.png'
@@ -606,7 +605,6 @@
                 font_size: '13dp'
                 color: 1,1,1,1
             TextInput:
-                focus: True
                 id: matrix
                 multiline: False
                 on_text_validate: root.set_info(matrix.text)

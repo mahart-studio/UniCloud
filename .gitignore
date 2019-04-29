@@ -11,5 +11,6 @@ __pycache__/
 libs/
 data/
 fonts/
+cloud_handler/
 .buildozer/
 bins/
