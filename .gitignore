@@ -13,4 +13,4 @@ data/
 fonts/
 cloud_handler/
 .buildozer/
-bins/
+bin/
