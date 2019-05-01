@@ -1,0 +1,10 @@
+from .home_page import HomePage as home_page
+from .add_course import Add_Course as add_course_page
+from .intro_pages import FirstPage as first_page
+from .intro_pages import SignInPage as sign_in_page
+from .intro_pages import LoginPage as login_page
+from .coursepage import Course_Page as course_page
+from .postpage import PostScreen as post_page
+from .downloadpage import DownloadPage as download_page
+from .searchpage import SearchPage as search_page
+from .filechooser import SelectFile as file_chooser
