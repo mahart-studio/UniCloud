@@ -40,13 +40,6 @@ else:
 Builder.load_file('student_tools.kv')
 
 
-def get_screens():
-    page_list=  [CalculatorPage, Matrix_detector, 
-        Exam_time_table, Lecture_time_table, Settings_password]
-
-    page_list = list(map(lambda obj: obj(), page_list))
-    return page_list
-
 
 class MyTab(BoxLayout, AndroidTabsBase):
     pass
@@ -563,23 +556,3 @@ class Matrix_detector(Screen):  #detector side of app
 
 class Result_Button(DropButton):
     pass
-
-
-# my screen management
-class Manager_(ScreenManager):
-    def __init__(self, **kwargs):
-        super(Manager_, self).__init__(**kwargs)
-        global screens
-        screens = self
-
-        self.add_widget(Home_page(name='home_page'))
-        self.add_widget(GP_Calculator(name='gp_page'))
-        self.add_widget(Matrix_detector(name='detector_page'))
-        self.add_widget(Exam_time_table(name='exam_page'))
-        self.add_widget(Lecture_time_table( name='lecture_page'))
-        self.add_widget(Calculate_Gp(name='calc_page'))
-        self.add_widget(Result_view(name='result_view_page'))
-        self.add_widget(Result_list(name='result_list_page'))
-        self.add_widget(Settings(name='settings page'))
-        self.add_widget(Settings_password(name='set_password_page'))
-
