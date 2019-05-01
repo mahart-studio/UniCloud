@@ -7,13 +7,13 @@ Config.set('graphics', 'width', '360')
 
 # Create our Resources
 from kivy.resources import resource_add_path
-resource_add_path('fonts')
+resource_add_path('data/fonts')
 resource_add_path('data/images/common')
 resource_add_path('data/images/pdfmaker')
 resource_add_path('data/images/cloud')
 resource_add_path('data/images/student')
 resource_add_path('Cloud')
-resource_add_path('Cloud/Pdfmaker')
+resource_add_path('Cloud/pdfmaker')
 resource_add_path('student_tools')
 
 # our major imports
@@ -26,7 +26,7 @@ from kivy.app import App
 import os
 
 if platform == 'android':
-    from android.runnable import run_on_ui_thread
+    from mahartstudios.android.api import set_status_color
 
 # from kivy.lang import Builder
 # root = Builder.load_file('settings.kv')
@@ -34,7 +34,7 @@ if platform == 'android':
 class UniCloud(App):
     def build(self):
 
-        self.set_status_color()
+        # self.set_status_color('holo_orange_light')
         self.creat_local_stores()
         return root
 
@@ -44,24 +44,11 @@ class UniCloud(App):
     def on_pause(self):
         return True
 
-    @run_on_ui_thread
-    def set_status_color(self, color='holo_orange_light'):
-        from jnius import autoclass
-
-        activity = autoclass('org.kivy.android.PythonActivity').mActivity
-        LayoutParams = autoclass('android.view.WindowManager$LayoutParams')
-        r_color = autoclass('android.R$color')
-        color = getattr(r_color, color)
-
-        window = activity.getWindow()
-        window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.setStatusBarColor(activity.getResources().getColor(color))
+    def on_start(self):
+        pass
 
     def on_stop(self):
         self.unicloud_store.put('user', first_time=False)
 
 if __name__ == "__main__":
     UniCloud().run()
-
-
