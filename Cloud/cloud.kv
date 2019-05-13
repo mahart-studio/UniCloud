@@ -54,7 +54,7 @@
                 Color:
                     rgba: get_color_from_hex('#FFE099')
                 Ellipse:
-                    size: 50, 50
+                    size: [self.texture_size[0]+6]*2
                     pos: self.center_x-25, self.center_y-25
             size_hint_x: None
             width: '100dp'
@@ -401,11 +401,12 @@ NavigationDrawer:
 
 <AndroidTabsLabel>:
     text_color_normal: get_color_from_hex('#CC6600')
-    font_name: 'comic'
+    text_color_active: 1,1,1,1
     bold: True
 
 <IconTab>:
     text_color_normal: get_color_from_hex('#CC6600')
+    text_color_active: 1,1,1,1
 
 <MyIconTab@IconTabBase>:
 

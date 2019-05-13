@@ -1,5 +1,6 @@
 
 import kivy
+from kivy import platform
 
 # kivy widgets
 from kivy.uix.screenmanager import ScreenManager
@@ -18,11 +19,14 @@ from kivy.garden.navigationdrawer import NavigationDrawer
 
 #python
 import os
+from threading import Thread
 
 # Mahart Studio Widget
 from mahartstudios.widgets.buttons import IconButton, RetainButton, NormalButton
 from mahartstudios.widgets.autocarousel import AutoCarousel
-# from mahartstudios.android.notification import fast_toasts
+
+if platform == 'android':
+    from mahartstudios.android.notification import fast_toast
 
 
 
@@ -152,6 +156,9 @@ class Manager(ScreenManager):
         from .screens.home_page import HomePage
         self.home_page =  HomePage(name='home_page')
         self.add_widget(self.home_page)   # default first page
+        
+        # thread the import for speed
+        Thread(target=self.thread_import).start()
 
         Clock.schedule_once(self.create_store)
         Clock.schedule_once(lambda dt: self.set_first_page())
@@ -174,11 +181,11 @@ class Manager(ScreenManager):
             self.current = name
         else:
             try:
-                importer = __import__('Cloud.screens', fromlist='Cloud')
-                Screen_obj = getattr(importer, name)
+                # importer = __import__('Cloud.screens', fromlist='Cloud')
+                Screen_obj = getattr(self.cloud_screens_module, name)
             except AttributeError:
-                importer = __import__('Cloud.pdfmaker', fromlist='Cloud')
-                Screen_obj = getattr(importer, name)
+                # importer = __import__('Cloud.pdfmaker', fromlist='Cloud')
+                Screen_obj = getattr(self.pdfmaker_module, name)
 
             page = Screen_obj(name=name)
             setattr(self, name, page)
@@ -191,13 +198,17 @@ class Manager(ScreenManager):
             page = getattr(self, name)
             self.current = name
         else:
-            importer = __import__('student_tools')
-            Screen_obj = getattr(importer, name)
+            # importer = __import__('student_tools')
+            Screen_obj = getattr(self.student_tools_module, name)
             page = Screen_obj(name=name)
             setattr(self, name, page)
             self.add_widget(page)
             self.current = name
 
+    def thread_import(self):
+        self.student_tools_module = __import__('student_tools')
+        self.cloud_screens_module = __import__('Cloud.screens', fromlist='Cloud')
+        self.pdfmaker_module = __import__('Cloud.pdfmaker', fromlist='Cloud')
 
     def create_store(self, dt):
         global unicloud_store

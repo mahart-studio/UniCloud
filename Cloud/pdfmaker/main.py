@@ -3,6 +3,7 @@
 #python -m kivy.atlas data/images/images 600 data/images/*
 
 import kivy
+from kivy import platform
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen, ScreenManager
@@ -24,7 +25,8 @@ from mahartstudios.widgets.buttons import DropButton
 from mahartstudios.effects import Effects
 from mahartstudios.widgets.alertpopup import AlertPopup
 
-# from mahartstudios.android.notification import fast_toast
+if platform == 'android':
+	from mahartstudios.android.notification import fast_toast
 
 # from template import Templates, UniCloudPdf
 from .crop import ImageCroper
@@ -713,9 +715,8 @@ class PdfScreens(ScreenManager):
 			layout.add_widget(btn)
 
 	def take_picture(self, *largs):
-		from mahartstudios.android.camera import Camera
-		picture = Camera(self.pic_taken, kivy.app.App.get_running_app().user_data_dir)
-		picture.take_picture()
+		from mahartstudios.android.camera import camera
+		camera.take_picture(self.pic_taken, kivy.app.App.get_running_app().user_data_dir)
 
 	def pic_taken(self, fn, *args):
 		self.add_more([fn])

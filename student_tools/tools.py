@@ -41,7 +41,7 @@ Builder.load_file('student_tools.kv')
 
 
 
-class MyTab(BoxLayout, AndroidTabsBase):
+class MyTab1(BoxLayout, AndroidTabsBase):
     pass
 
 class CalculatorPage(Screen):

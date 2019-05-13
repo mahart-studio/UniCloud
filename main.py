@@ -5,6 +5,9 @@ Config.set('kivy', 'exit_on_escape', '0')
 Config.set('graphics', 'height', '630')
 Config.set('graphics', 'width', '360')
 
+import sys
+sys.path=['libs',]+sys.path
+
 # Create our Resources
 from kivy.resources import resource_add_path
 resource_add_path('data/fonts')
@@ -34,7 +37,8 @@ if platform == 'android':
 class UniCloud(App):
     def build(self):
 
-        # self.set_status_color('holo_orange_light')
+        # set_status_color('holo_orange_dark')
+        # self.start_app_service()
         self.creat_local_stores()
         return root
 
@@ -43,6 +47,16 @@ class UniCloud(App):
 
     def on_pause(self):
         return True
+
+    def start_app_service(self):
+        from jnius import autoclass
+        service = autoclass('org.unicloud.unicloud.ServiceUniservice')
+        activity = autoclass('org.kivy.android.PythonActivity').mActivity
+        service.start(activity, 'unicloud')
+
+    def restart_service(self):
+        service = autoclass('org.kivy.android.PythonService').mService
+        service.setAutoRestartService(True)
 
     def on_start(self):
         pass
