@@ -37,8 +37,8 @@ if platform == 'android':
 class UniCloud(App):
     def build(self):
 
-        # set_status_color('holo_orange_dark')
-        # self.start_app_service()
+        set_status_color('holo_orange_dark')
+        self.start_app_service()
         self.creat_local_stores()
         return root
 

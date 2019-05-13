@@ -3,7 +3,7 @@ import kivy
 from kivy import platform
 
 # kivy widgets
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, ScreenManagerException
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.recycleview import RecycleView
@@ -174,8 +174,17 @@ class Manager(ScreenManager):
         self.login_page = LoginPage(name='login_page')
         self.sign_in_page = SignInPage(name='sign_in_page')
         self.download_page = DownloadPage(name='download_page')
+    
+    # overiding
+    def get_screen(self, name):
+        try:
+            return super(Manager, self).get_screen(name)
+        except ScreenManagerException:
+            self.go_to_page(name, go_to_screen=False)
+            return super(Manager, self).get_screen(name)
+            
 
-    def go_to_page(self, name):
+    def go_to_page(self, name, go_to_screen=True):
         if hasattr(self, name):
             page = getattr(self, name)
             self.current = name
@@ -190,7 +199,9 @@ class Manager(ScreenManager):
             page = Screen_obj(name=name)
             setattr(self, name, page)
             self.add_widget(page)
-            self.current = name
+
+            if go_to_screen:
+                self.current = name
 
 
     def go_to_external_page(self, name):

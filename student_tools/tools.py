@@ -106,7 +106,7 @@ class GpCalculator(Screen):
         self.grid_guy.clear_widgets()
         for i in range(5): #add 5 courses to the gridlayout
             self.course_text = 'Course {}'
-            self.grid_guy.add_widget(Label(text=self.course_text.format(i+1), size_hint_y=None, height='50dp',
+            self.grid_guy.add_widget(Label(text=self.course_text.format(i+1), size_hint_y=None, height='38dp',
                                         color=(.1, .1, .1, 1)))
             
             self.grid_guy.add_widget(Factory.Spinner(text='2', values=('1', '2', '3', '4', '5')))
@@ -120,7 +120,6 @@ class GpCalculator(Screen):
         for j in range(3):
             if len(self.grid_list) <= 3:
                 self.course_num = 2
-                pass
             else:
                 self.grid_guy.remove_widget(self.grid_list[0])   
         if len(self.grid_list) != 3:
@@ -132,7 +131,7 @@ class GpCalculator(Screen):
 
     def add_btn(self):  #add a new button to the gridlayout
         self.course_text = 'Course {}'
-        self.grid_guy.add_widget(Label(text=self.course_text.format(self.course_num), size_hint_y=None, height=40, color=(.1, .1,.1, 1)))
+        self.grid_guy.add_widget(Label(text=self.course_text.format(self.course_num), size_hint_y=None, height='38dp', color=(.1, .1,.1, 1)))
 
         self.grid_guy.add_widget(Factory.Spinner(text='2', values=('1', '2', '3', '4', '5')))
 
@@ -287,11 +286,11 @@ class Result_list(Screen):
             result_btn.delete=partial(self.delete_data, result_btn.time)
 
     def load_data(self, time):
-        screens.current = 'result_view_page'
+        self.manager.current = 'result_view_page'
         gp = gp_store.get(time)['gp']
         sum_of_unit = gp_store.get(time)['sum_of_unit']
         course_values = gp_store.get(time)['course_values']
-        screens.get_screen('result_view_page').set_values(gp, sum_of_unit, course_values)
+        self.manager.get_screen('result_view_page').set_values(gp, sum_of_unit, course_values)
 
     def delete_data(self, time):
         child = list(filter(lambda child: child.time == time, self.result_scroll.children))[0]
@@ -307,7 +306,7 @@ class Result_list(Screen):
 
     def on_result_press(self, pos):
         Gp_values2 = Gp_values_list[pos]
-        screens.current = 'result_view_page'
+        self.manager.current = 'result_view_page'
 
 
 class PasswordPop(ModalView):
@@ -378,8 +377,8 @@ class Settings(Screen):
         super(Settings, self).__init__(**kwargs)
 
     def go_back(self): #go back to previous page cause you might have being coming from any page
-        previous = screens.previous()
-        screens.current = previous
+        previous = self.manager.previous()
+        self.manager.current = previous
 
 
 class Home_page(Screen):
@@ -461,8 +460,8 @@ class Matrix_detector(Screen):  #detector side of app
                     # print(line)
 
     def go_back(self): #go back to previous page cause you might have being coming from any page
-        previous = screens.previous()
-        screens.current = previous
+        previous = self.manager.previous()
+        manager.current = previous
 
     def get_year(self, matrix):
     
