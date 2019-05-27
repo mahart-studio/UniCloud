@@ -466,7 +466,7 @@ class Matrix_detector(ScreenBase):  #detector side of app
 
     def get_year(self, matrix):
     
-        self.year = matrix[0:2]
+        self.year = str(matrix)[0:2]
         self.current_year = time.ctime()
 
         self.year = int('20' + self.year)
@@ -486,7 +486,7 @@ class Matrix_detector(ScreenBase):  #detector side of app
         
         self.list_falculty = list(self.courses)
         self.list_falculty.sort()
-        print((self.list_falculty))
+        matrix = str(matrix)
 
         if matrix[2] == '0':
             self.falc_no = int(matrix[3])-1
@@ -503,23 +503,20 @@ class Matrix_detector(ScreenBase):  #detector side of app
     def get_department(self, matrix):
 
         self.falculty = self.get_falculty(matrix)
-        # self.falc_no = self.falculty[1]
-        print((self.falculty))
+        matrix = str(matrix)
         
         if matrix[4] == '0':
-            self.dept_no = int(matrix[5])-1
-            print((self.dept_no))
-            print((self.courses[self.falculty]))
-            self.department = self.courses[self.falculty][self.dept_no]
+            dept_no = int(matrix[5])-1
+            department = self.courses[self.falculty][dept_no]
         else:
-            self.dept_no =  int(matrix[4:6])
-            self.department = self.courses[self.falculty][self.dept_no]
+            dept_no =  int(matrix[4:6])
+            department = self.courses[self.falculty][dept_no]
 
-
-        return self.department
+        return department
 
 
     def get_position(self, matrix):
+        matrix = str(matrix)
 
         if matrix[7] == '0' and matrix[6] == '0':
             self.position = matrix[8]
@@ -531,28 +528,40 @@ class Matrix_detector(ScreenBase):  #detector side of app
         return self.position
     
     def set_info(self, matrix):
-        self.box_guy = Box_guy()
-        self.year_display = self.ids.year_display
-        self.level_display = self.ids.level_display
-        self.department_display = self.ids.department_display
-        self.falculty_display = self.ids.falculty_display
-        self.position_display = self.ids.position_display
+        box_guy = Box_guy()
+        year_display = self.ids.year_display
+        level_display = self.ids.level_display
+        department_display = self.ids.department_display
+        falculty_display = self.ids.falculty_display
+        position_display = self.ids.position_display
 
 
-        self.matrix = int(matrix)
-        self.year_level = self.get_year(matrix)
-        self.year = str(self.year_level[1])
-        self.level = str(self.year_level[0])
-        
-        self.department = str(self.get_department(matrix))
-        self.falculty = str(self.get_falculty(matrix))
-        self.position = str(self.get_position(matrix))
+        try:
+            matrix = int(matrix)
+            year_level = self.get_year(matrix)
+            year = str(year_level[1])
+            level = str(year_level[0])
+            
+            department = str(self.get_department(matrix))
+            falculty = str(self.get_falculty(matrix))
+            position = str(self.get_position(matrix))
 
-        self.year_display.text = self.year
-        self.level_display.text = self.level
-        self.department_display.text = self.department
-        self.falculty_display.text = self.falculty
-        self.position_display.text = self.position
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            year_display.text = ''
+            level_display.text = ''
+            department_display.text = ''
+            falculty_display.text = ''
+            position_display.text = ''
+            from mahartstudios.android.notification import fast_toast
+            fast_toast('Not found in database.')
+        else:
+            year_display.text = year
+            level_display.text = level
+            department_display.text = department
+            falculty_display.text = falculty
+            position_display.text = position
 
 class Result_Button(DropButton):
     pass
