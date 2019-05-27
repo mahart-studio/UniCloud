@@ -1,7 +1,7 @@
-from screenbase import UniScreen
+from screenbase import ScreenBase
 from kivy.lang import Builder
 
-class Course_Page(UniScreen):
+class Course_Page(ScreenBase):
 
     def __init__(self, **kwargs):
         Builder.load_string(kv_string)
@@ -32,6 +32,7 @@ class Course_Page(UniScreen):
 
 kv_string = '''
 <Course_Page>:
+    on_back_button: self.manager.go_to_page('home_page')
     on_pre_enter: root.manager.parent.allow_touch_drag= False
     FloatLayout:
         canvas.before:
@@ -110,7 +111,7 @@ kv_string = '''
                             id: test_scroll
                             cols: 1
                             size_hint: (1, None)
-                            hieght: self.minimum_height
+                            height: self.minimum_height
                             Label:
                                 text: 'No Material Available'
                                 color: (.4, .4, .4, 1)
@@ -121,7 +122,7 @@ kv_string = '''
                         size: self.size
                         GridLayout:
                             id: course_mat_scroll
-                            hieght: self.minimum_height
+                            height: self.minimum_height
                             cols: 1
                             size_hint: (1, None)
                             Label:
@@ -136,7 +137,7 @@ kv_string = '''
                             id: ass_scroll
                             cols: 1
                             size_hint: (1, None)
-                            hieght: self.minimum_height
+                            height: self.minimum_height
                             Label:
                                 text: 'No Material Available'
                                 color: (.4, .4, .4, 1)
@@ -149,7 +150,7 @@ kv_string = '''
                             id: class_scroll
                             cols: 1
                             size_hint: (1, None)
-                            hieght: self.minimum_height
+                            height: self.minimum_height
                             Label:
                                 text: 'No Material Available'
                                 color: (.4, .4, .4, 1)

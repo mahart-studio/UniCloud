@@ -1,4 +1,3 @@
-
 import kivy
 from kivy import platform
 
@@ -11,7 +10,11 @@ from kivy.uix.recycleview import RecycleView
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.storage.jsonstore import JsonStore
-from kivy.properties import StringProperty, ObjectProperty, NumericProperty, BooleanProperty
+from kivy.properties import (StringProperty, ObjectProperty,
+                            NumericProperty, BooleanProperty,
+                            ListProperty)
+from kivy.core.window import Window
+
 
 # kivy garden
 from kivy.garden.androidtabs import AndroidTabsBase
@@ -35,7 +38,30 @@ class MyTab(BoxLayout, AndroidTabsBase):
 
 
 class UniCycle(RecycleView):
-    pass
+    
+    multiselect = BooleanProperty(False)
+    selected_list = ListProperty([])
+
+    def on_multiselect(self, *a):
+        if self.multiselect:
+            Window.bind(on_key_down=self.listen_for_key)
+        else:
+            Window.unbind(on_key_down=self.listen_for_key)
+            for child in self.selected_list:
+                child.selected=False
+            self.selected_list=[]
+
+    def listen_for_key(self, keyboard, keycode, text, *modifiers):
+        if keycode == 27:
+            self.multiselect=False
+            return True
+
+    def select_me(self, me):
+        if me not in self.selected_list:
+            self.selected_list.append(me)
+        else:
+            me.selected=False
+            self.selected_list.remove(me)
 
 
 class Material_btn(RetainButton):
@@ -53,14 +79,12 @@ class Material_btn(RetainButton):
 
 class Course_btn(RetainButton):
 
-    index = None
     selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
 
     def on_touched(self, *largs):
-        if self.parent.multiselect:
-            self.parent.select_node(self.index)            
+        if self.parent.parent.multiselect:
             self.selected = True
+            self.parent.parent.select_me(self)
         else:
             # do what you would normaly do
             screens.go_to_page('course_page')
@@ -68,11 +92,9 @@ class Course_btn(RetainButton):
     
     def on_retain_touch(self, *largs):
         ''' Add selection on touch down '''
-        if self.selectable:
-            self.parent.select_node(self.index)
-            self.selected = True
-            self.parent.multiselect = True
-            self.parent.touch_multiselect = True
+        self.selected = True
+        self.parent.parent.multiselect=True
+        self.parent.parent.select_me(self)
 
 
 class MaterialOptions(ModalView):
@@ -242,7 +264,6 @@ class Manager(ScreenManager):
             else:
                 # self.current= 'pdf maker'
                 pass
-
 
 root = Builder.load_file('cloud.kv')
 

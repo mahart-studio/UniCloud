@@ -48,7 +48,7 @@
 					icon_source: atlas_path+'arrow_back'
 					size_hint_x: None
 					width: '50dp'
-					on_release: Factory.TemplateAlert(comfirm=partial(root.go_page,'home_page')).open();  #root.current = 'home'
+					on_release: Factory.TemplateAlert(comfirm=partial(root.go_page,'home_page')).open()
 
 				Label:
 					color: get_color_from_hex('#FF9900')
@@ -128,69 +128,7 @@
 				background_color: 0,0,0,0
 				on_release: root.delete_pic()
 
-
-	Screen:
-		name: 'file'
-		FloatLayout:
-			BoxLayout:
-				orientation: 'vertical'
-				BoxLayout:
-					size_hint_y: None
-					height: '50dp'
-					canvas.before:
-						Color:
-							rgba: 1,1,1,1
-						Rectangle:
-							size: self.size
-							pos: self.pos
-
-					IconButton:
-						shape: 'rectangle'
-						normal_color: 1,1,1,1
-						icon_source: atlas_path+'arrow_back'
-						size_hint_x: None
-						width: '50dp'
-						on_release: root.current = 'home'
-
-					Label:
-						rgba: get_color_from_hex('#FF9966')
-						text: 'Select Images'
-						text_size: self.size
-						padding: '40dp', '40dp'
-						halign: 'left'
-						valign: 'center'
-						font_size: '22dp'
-						markup: True
-
-					Label:
-						id: count
-						text: '0'
-						size_hint_x: None
-						width: '100dp'
-						rgba: get_color_from_hex('#FF9966')
-
-				FileChooserThumbView:
-					id: chooser
-					filters: [root.my_filter]
-					filter_dirs: True
-					multiselect: True
-					on_selection: count.text = str(len(self.selection))
-					progress_cls: 'MyFileProgressCls'
-					canvas.before:
-						Color:
-							rgba: .95,.95,.95,1
-						Rectangle:
-							size: self.size
-							pos: self.pos
-
-        CircleBtn:
-            background_color: 0, 0, 0, 0
-            size_hint: (None, None)
-            size: ('40dp', '40dp')
-            pos_hint: {'x': .8,  'y': .05}
-            source: 'float.png'
-            color: (1, 1, 1, 1)
-			on_release: root.add_more(chooser.selection)
+	ThumbChooser:
 
 	Screen:
 		name: 'template chooser'

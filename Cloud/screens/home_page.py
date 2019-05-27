@@ -2,9 +2,9 @@ from kivy.lang import Builder
 
 from mahartstudios.widgets.buttons import RetainButton
 
-from screenbase import UniScreen
+from screenbase import ScreenBase
 
-class HomePage(UniScreen):
+class HomePage(ScreenBase):
 
     def __init__(self, **kwargs):
         Builder.load_string(kv_string)

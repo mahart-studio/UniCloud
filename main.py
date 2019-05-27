@@ -1,7 +1,5 @@
 from kivy.config import Config
 Config.set('kivy', 'exit_on_escape', '0')
-# Eventually write
-#  Config.write()
 Config.set('graphics', 'height', '630')
 Config.set('graphics', 'width', '360')
 
@@ -29,7 +27,10 @@ from kivy.app import App
 import os
 
 if platform == 'android':
-    from mahartstudios.android.api import set_status_color
+    from mahartstudios.android.api import set_status_color, remove_presplash
+
+from kivy.core.window import Window
+Window.softinput_mode='resize'
 
 # from kivy.lang import Builder
 # root = Builder.load_file('settings.kv')
@@ -37,8 +38,11 @@ if platform == 'android':
 class UniCloud(App):
     def build(self):
 
-        set_status_color('holo_orange_dark')
-        self.start_app_service()
+        if platform == 'android':
+            set_status_color('holo_orange_dark')
+            remove_presplash()
+            self.start_app_service()
+            
         self.creat_local_stores()
         return root
 

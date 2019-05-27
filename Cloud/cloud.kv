@@ -41,11 +41,11 @@
         Line:
             points: [self.x+10, self.y, self.width-10, self.y]
             width: 1.4
-            Color:
-                rgba: (.5, .5, .5, .8) if root.selected else (0, 0, 0, 0)
-            Rectangle:
-                pos: root.pos
-                size: root.size
+        Color:
+            rgba: (.5, .5, .5, .4) if root.selected else (0, 0, 0, 0)
+        Rectangle:
+            pos: root.pos
+            size: root.size
     BoxLayout:
         size: root.size
         pos: root.pos
@@ -55,7 +55,7 @@
                     rgba: get_color_from_hex('#FFE099')
                 Ellipse:
                     size: [self.texture_size[0]+6]*2
-                    pos: self.center_x-(self.texture_size[0]+6)/2, self.center_y-(self.texture_size[0]+6)/2
+                    pos: self.center_x-((self.texture_size[0]+6)/2), self.center_y-((self.texture_size[0]+6)/2)
             size_hint_x: None
             width: '100dp'
             text: root.course_data['code']
@@ -87,7 +87,7 @@
                     rgba: get_color_from_hex('#FFE099')
                 Ellipse:
                     size: [self.texture_size[0]+20]*2
-                    pos: self.center_x-(self.texture_size[0]+20)/2, self.center_y-(self.texture_size[0]+20)/2
+                    pos: self.center_x-((self.texture_size[0]+20)/2), self.center_y-((self.texture_size[0]+20)/2)
             size_hint_x: None
             width: '100dp'
             source: 'doc.png'
@@ -146,7 +146,6 @@
             normal_source: 'tree_closed.png'
             down_source: 'tree_opened.png'
             on_state: root.state=self.state
-
 
 
 NavigationDrawer:
@@ -273,13 +272,10 @@ NavigationDrawer:
 <Manager>:
 
 
-
-
 <CustLabel1@Label>:
     size_hint: (.5, 1)
     pos_hint: {'center_x': .25, 'center_y': .5}
     color: (0, 0, 0, 1)
-
 
 
 <MyFileProgressCls@FileChooserProgressBase>:
@@ -298,7 +294,7 @@ NavigationDrawer:
                 pos: self.pos
         pos_hint: {'center_y': .5, 'center_x': .5}
         size_hint: None,None
-        size: '140dp', '140dp'
+        size: '120dp', '120dp'
         source: 'comments-loader.gif'
 
 
@@ -397,7 +393,6 @@ NavigationDrawer:
                     text: '1.0/4mb'
                     color: get_color_from_hex('#666666')
                     font_size: '12dp'
-
 
 <AndroidTabsLabel>:
     text_color_normal: get_color_from_hex('#CC6600')
@@ -501,7 +496,7 @@ NavigationDrawer:
                 LeftIconButton:
                     text: 'Download Later'
                     icon_source: 'Your Course1.png'
-                    on_release: root.download_later(root.material_data)
+                    on_release: root.dismiss(); root.download_later(root.material_data)
 
         Screen:
             name: 'loading'
@@ -580,7 +575,6 @@ NavigationDrawer:
     background_active: ''
     background_normal: ''
     background_color: get_color_from_hex('#FF9966')
-    # focus: True
     multiline: False
     color: 1,1,1,1
     padding: '20dp', '14dp',0,0
@@ -600,8 +594,7 @@ NavigationDrawer:
     color: get_color_from_hex('#ff6600')
 
 
-
-<UniCycleLayout@FocusBehavior+LayoutSelectionBehavior+RecycleBoxLayout>:
+<UniCycleLayout@FocusBehavior+RecycleBoxLayout>:
 
 <UniCycle>:
     bar_color: get_color_from_hex('#CC6600aa')

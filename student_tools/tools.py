@@ -24,6 +24,7 @@ from io import open
 import os, os.path
 
 from mahartstudios.widgets.buttons import DropButton
+from screenbase import ScreenBase
 
 student_store = JsonStore('student_store.json')
 gp_store = JsonStore('gp_store.json')
@@ -55,7 +56,7 @@ class CalculatorPage(Screen):
         manager.add_widget(GpCalculator())
 
 
-class CalculatorHome(Screen):
+class CalculatorHome(ScreenBase):
     def __init__(self, **kwargs):
         super(CalculatorHome, self).__init__(**kwargs)
 
@@ -72,7 +73,7 @@ class CalculatorHome(Screen):
             self.manger.current =  'result_list_page'
 
 
-class GpCalculator(Screen):
+class GpCalculator(ScreenBase):
     
     def __init__(self, **kwargs):
         super(GpCalculator, self).__init__(**kwargs)
@@ -224,7 +225,7 @@ class GpCalculator(Screen):
         self.parent.get_screen('result_view_page').set_values(gp, sum_of_unit, course_values)
 
 
-class Result_view(Screen):
+class Result_view(ScreenBase):
     def __init__(self, **kwargs):
         super(Result_view, self).__init__(**kwargs)        
         self.gp_view = self.ids.gp_view
@@ -259,7 +260,7 @@ class Result_view(Screen):
             self.ids.num_of_course.text = 'Total Number Of Courses: {}'.format(str(len(course_values[0])))
 
 
-class Result_list(Screen):
+class Result_list(ScreenBase):
     def __init__(self, **kwargs):
         super(Result_list, self).__init__(**kwargs)
         self.result_scroll = self.ids.result_scroll
@@ -424,7 +425,7 @@ class Exam_time_table(Screen):
 class Box_guy(BoxLayout):
     pass
 
-class Matrix_detector(Screen):  #detector side of app
+class Matrix_detector(ScreenBase):  #detector side of app
 
     def __init__(self, **kwargs):
         super(Matrix_detector, self).__init__(**kwargs)

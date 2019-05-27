@@ -1,8 +1,8 @@
 from kivy.uix.screenmanager import Screen
 from kivy.core.window import Window
+from kivy.uix.modalview import ModalView
 
-
-class UniScreen(Screen):
+class ScreenBase(Screen):
 
     __events__ = ('on_back_button',)
 
@@ -14,7 +14,15 @@ class UniScreen(Screen):
 
     def listen_for_key(self, keyboard, keycode, text, *modifiers):
         if keycode == 27:
-            self.dispatch('on_back_button')
+            self._callback()
+            return True
+
+    def _callback(self):
+        for child in Window.children:
+            if isinstance(child, ModalView):
+                return True
+
+        self.dispatch('on_back_button')
 
     def on_back_button(self):
         ''' event fired when the back button is pressed'''

@@ -1,7 +1,8 @@
-from kivy.uix.screenmanager import Screen
+from screenbase import ScreenBase
+
 from kivy.lang import Builder
 
-class SearchPage(Screen):
+class SearchPage(ScreenBase):
 
     def __init__(self, **kwargs):
         Builder.load_string(kv_string)
@@ -12,6 +13,7 @@ kv_string = '''
 <SearchPage>:
     on_pre_enter: root.manager.parent.allow_touch_drag= False
     # on_enter: search_input.focus = True
+    on_back_button: self.manager.go_to_page('home_page')
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -29,7 +31,6 @@ kv_string = '''
                 Rectangle:
                     size: self.size
                     pos: self.pos
-
             IconButton:
                 icon_source: 'arrow_back1.png'
                 size_hint_x: None

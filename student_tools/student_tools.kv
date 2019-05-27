@@ -9,7 +9,7 @@
 
 <Label>:
     font_name: 'comic'
-	color: 0,0,0,1
+	# color: 0,0,0,1
 
 <Result_Button>:
     size_hint: (1, None)
@@ -67,6 +67,7 @@
 				pos_hint: {'center_y':.5,'center_x':.3}
 				text: 'View'
 				on_release: root.load()
+
 
 <CustButton@Button>:
     background_normal: ''
@@ -126,11 +127,10 @@
             size_hint: (1, None)
             height: '50dp'
             ImgBtn:
-                size_hint: None, 1
-                size: '32dp', '32dp'
+                size_hint_x: None
+                width: '50dp'
                 on_release: app.root.toggle_state(True)
                 source: 'ic_action_list.png'
-                pos_hint: {'center_x': .7, 'center_y': .5}
 
             Label:
                 text: 'Mahart'
@@ -195,6 +195,7 @@
 
 <CalculatorHome>:
     name: 'calculator_home'
+    on_back_button: self.manager.parent.manager.go_to_page('home_page')
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -208,14 +209,12 @@
             height: '110dp'
             effect: Effects(self).add_shadow()
             ImgBtn:
-                size_hint: None, 1
-                size: '32dp', '32dp'
+                size_hint_x: None
+                width: '50dp'
                 on_release: root.manager.parent.manager.go_to_page('home_page')
                 source: 'arrow_back1.png'
-                pos_hint: {'top': 1}
 
             Label:
-                size_hint_y: None
                 text_size: self.size
                 valign: 'middle'
                 color: 1,1,1,1
@@ -269,6 +268,7 @@
 
 <GpCalculator>:
     name: 'calc_page'
+    on_back_button: self.manager.current = 'calculator_home'
     FloatLayout:
         BoxLayout:
             canvas.before:
@@ -283,8 +283,8 @@
                 size_hint: (1, None)
                 height: '50dp'
                 ImgBtn:
-                    size_hint: None, None
-                    size: '40dp', '32dp'
+                    size_hint_x: None
+                    width: '50dp'
                     on_release: root.manager.current = 'calculator_home'
                     source: 'arrow_back1.png'
                     pos_hint: {'center_x': .7, 'center_y': .5}
@@ -297,8 +297,8 @@
                 ImgBtn:
                     id: calc_option
                     on_release: #A bubble or something
-                    size_hint: None, 1
-                    size: '32dp', '32dp'
+                    size_hint_x: None
+                    width: '50dp'
                     pos_hint: {'center_x': .3, 'center_y': .5}
                     source: 'ic_action_overflow.png'
 
@@ -385,6 +385,7 @@
 
 <Result_list>:
     name: 'result_list_page'
+    on_back_button: self.manager.current = 'calculator_home'
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -399,10 +400,9 @@
             height: '50dp'
             effect: Effects(self).add_shadow()
             ImgBtn:
-                size_hint: None, None
-                size: '32dp', 1
+                size_hint_x: None
+                width: '50dp'
                 source: 'arrow_back1.png'
-                pos_hint: {'center_x': .7, 'center_y': .5}
                 on_release: root.manager.current = 'calculator_home'
 
             Label:
@@ -412,13 +412,11 @@
             Button:
                 id: option
                 size_hint: None, None
-                size: '32dp', '32dp'
-                pos_hint: {'center_x': .3, 'center_y': .5}
+                size_hint_x: None
+                width: '50dp'
                 background_normal: 'ic_action_overflow.png'
 
         ScrollView:
-            size_hint: (1, 1)
-            size: self.size
             canvas.before:
                 Color:
                     rgba: (1, 1, 1, 1)
@@ -433,6 +431,7 @@
 
 <Result_view>:
     name: 'result_view_page'
+    on_back_button: self.manager.current = 'calculator_home'
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -446,8 +445,8 @@
             size_hint: (1, None)
             height: '50dp'
             ImgBtn:
-                size_hint: None, 1
-                size: '32dp', '32dp'
+                size_hint_x: None
+                width: '50dp'
                 source: 'arrow_back1.png'
                 on_release: root.manager.current = 'calculator_home'
 
@@ -458,8 +457,8 @@
             Button:
                 id: result_list_option
                 size_hint: None, None
-                size: '32dp', '32dp'
-                pos_hint: {'center_x': .3, 'center_y': .5}
+                size_hint_x: None
+                width: '50dp'
                 background_normal: 'ic_action_overflow.png'
 
         BoxLayout:
@@ -569,6 +568,7 @@
 
 <Matrix_detector>:
     name: 'detector_page'
+    on_back_button: app.root.toggle_state(False)
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -582,9 +582,9 @@
             size_hint: (1, None)
             height: '50dp'
             ImgBtn:
-                size_hint: None, None
-                size: '32dp', '32dp'
-                on_release: app.root.toggle_state(False); root.parent.go_to_page('home_page')
+                size_hint_x: None
+                width: '50dp'
+                on_release: app.root.toggle_state(False)
                 source: 'arrow_back1.png'
                 pos_hint: {'center_x': .7, 'center_y': .5}
 
@@ -744,8 +744,8 @@
             height: '60dp'
             effect: Effects(self).add_shadow()
             ImgBtn:
-                size_hint: None, None
-                size: '32dp', '32dp'
+                size_hint_x: None
+                width: '50dp'
                 source: 'arrow_back1.png'
                 pos_hint: {'center_x': .7, 'center_y': .5}
                 on_release: root.manager.current = 'settings page'
@@ -828,8 +828,8 @@
             effect: Effects(self)
             on_size: self.effect.add_shadow()
             ImgBtn:
-                size_hint: None, None
-                size: '32dp', 1
+                size_hint_x: None
+                width: '50dp'
                 on_release: app.root.toggle_state(True)
                 source: 'ic_action_list.png'
                 pos_hint: {'center_x': .7, 'center_y': .5}
@@ -951,7 +951,7 @@
                     rgba: get_color_from_hex('#FFE099')
                 Ellipse:
                     size: [self.texture_size[0]+6]*2
-                    pos: self.center_x-(self.texture_size[0]+6)/2, self.center_y-(self.texture_size[0]+6)/2
+                    pos: self.center_x-((self.texture_size[0]+6)/2), self.center_y-((self.texture_size[0]+6)/2)
             size_hint_x: None
             width: '100dp'
             text: root.day[:3]

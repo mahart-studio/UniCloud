@@ -1,14 +1,25 @@
-from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 
+from screenbase import ScreenBase
+import os
 
-class SelectFile(Screen):
+class SelectFile(ScreenBase):
+    file_chooser = ObjectProperty(None)
+
     def __init__(self, **kwargs):
         Builder.load_string(kv_string)
         super(SelectFile, self).__init__(**kwargs)
 
+    def on_back_button(self):
+        previous_dir = os.path.dirname(self.file_chooser.path)
+        if os.path.exists(previous_dir):
+            self.file_chooser.path =previous_dir
+
+
 kv_string = '''
 <SelectFile>:
+    file_chooser: file_chooser
     on_pre_enter: root.manager.parent.allow_touch_drag= False
     canvas.before:
         Color:

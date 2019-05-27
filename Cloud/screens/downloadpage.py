@@ -1,18 +1,20 @@
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 
-class DownloadPage(Screen):
+from screenbase import ScreenBase
+
+class DownloadPage(ScreenBase):
     def __init__(self, **kwargs):
         Builder.load_string(kv_string)
 
         super(DownloadPage, self).__init__(**kwargs)
 
 
-
 kv_string = '''
 <DownloadPage>:
     on_pre_enter: root.manager.parent.allow_touch_drag= True
     on_leave: android_tab.default_tab = 0
+    app.root.toggle_state(False)
     canvas.before:
         Color:
             rgba: 1,1,1,1

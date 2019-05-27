@@ -30,6 +30,7 @@ if platform == 'android':
 
 # from template import Templates, UniCloudPdf
 from .crop import ImageCroper
+from .filechooser import ThumbChooser
 
 #External Modules
 from PIL import Image as PilImage
@@ -203,23 +204,6 @@ class PdfScreens(ScreenManager):
 		self.current = page				#go to page and dismiss the popup
 		self.page_options.dismiss()
 		
-		
-
-	def my_filter(self, directory, filename):
-		exts = ['.png', '.jpg', 'jpeg', '.gif']
-		if os.path.isdir(os.path.join(directory, filename)):
-
-			if len(os.listdir(directory)) != 0:
-				return True
-							#if the Extention were looking for is in folder
-			else:
-				return False
-		else:
-			_, ext = os.path.splitext(filename)
-			if ext in exts:
-				return True
-			else: 
-				return False
 
 	def delete_pic(self):
 		
