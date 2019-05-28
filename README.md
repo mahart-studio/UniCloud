@@ -17,36 +17,36 @@ https://mahart-studio.com/UniCloud
 
 ### Find Material of Couses
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(1).jpg">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/data/showcase/Screenshot(1).jpg">
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(7).jpg">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/data/showcase/Screenshot(7).jpg">
 </p>
 
 ### Different Tools
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(2).jpg">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/data/showcase/Screenshot(2).jpg">
 </p>
 
 
 ### Matric Detector
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(3).png">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/data/showcase/Screenshot(3).png">
 </p>
 
 ### Pdf Maker
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(4).png">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/data/showcase/Screenshot(4).png">
 </p>
 
 ### Gp Calculator
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/resources/showcase/Screenshot(8).png">
+  <img src="https://raw.githubusercontent.com/avour/UniCloud/master/resources/showcase/Screenshot(8).png">
 </p>
 
 _Please contact us via pull request or project issue if you would like to contribute to the project._
