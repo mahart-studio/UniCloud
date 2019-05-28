@@ -260,7 +260,6 @@ class Manager(ScreenManager):
         if unicloud_store.exists('user'):
             if unicloud_store.get('user')['first_time']:
                 self.go_to_page('first_page')
-                Clock.schedule_once(lambda dt: setattr(self, 'current', 'home_page'), 6)
             else:
                 # self.current= 'pdf maker'
                 pass

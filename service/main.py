@@ -12,7 +12,8 @@ from time import sleep
         
 
 if __name__=='__main__':
-    while True:
-        sleep(8)
-        notification.notify(title='Service Started',message='Unicloud has started a service!!')
-        print('servings: ',argument )
+    pass
+    # while True:
+    #     sleep(8)
+    #     notification.notify(title='Service Started',message='Unicloud has started a service!!')
+    #     print('servings: ',argument )

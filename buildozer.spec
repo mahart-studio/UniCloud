@@ -17,15 +17,17 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,txt,json,gif
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
+source.include_patterns = .*/.git/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, .git, .vscode, cloud_handler
+source.exclude_dirs = tests, bin, .git, .vscode
 
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
+#source.exclude_patterns = data/showcase/*
 
 # (str) Application versioning (method 1)
 version = 0.1

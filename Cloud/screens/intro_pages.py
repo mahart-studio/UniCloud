@@ -55,15 +55,13 @@ signin_kv = '''
         CustomInput:
             size_hint_y: None
             height: '50dp'
-            hint_text: 'example@email.comm'
-            text: 'Email'
+            hint_text: 'example@gmail.com'
         SignLabel:
             text: 'Username:'
         CustomInput:
             size_hint_y: None
             height: '50dp'
-            hint_text: 'Username'
-            text: 'Username'
+            hint_text: 'john123'
         SignLabel:
             text: 'Password:'
         BoxLayout:
@@ -71,7 +69,6 @@ signin_kv = '''
             height: '50dp'
             CustomInput:
                 hint_text: 'password'
-                text: 'Password'
                 password: True
                 id: password
             IconToggle:
@@ -90,7 +87,6 @@ signin_kv = '''
             height: '50dp'
             CustomInput:
                 hint_text: 'password'
-                text: 'Password'
                 password: True
                 id: re_enter
             IconToggle:
@@ -102,16 +98,18 @@ signin_kv = '''
                 on_state:
                     if self.state == 'down': re_enter.password=False
                     else: re_enter.password=True
-        Label:
-            text: '[color=#ff0000]Warning[/color]'
-            markup: True
-            id: warnig
         IconButton:
             size_hint_y: None
             height: '50dp'
             icon_source: 'sign_button.png'
             on_release: root.parent.go_to_page('login_page')
             normal_color: get_color_from_hex('#ff9966')
+        Label:
+            text: '[u][color=3088ff][ref=later]Later[/ref][/color][/u]'
+            markup: True
+            color: .2,.5,1,1
+            on_ref_press: root.parent.go_to_page('home_page')
+
 '''
 
 login_kv = '''
@@ -151,8 +149,7 @@ login_kv = '''
         CustomInput:
             size_hint_y: None
             height: '50dp'
-            hint_text: 'Username'
-            text: 'Username'
+            hint_text: 'john123'
         SignLabel:
             text: 'Password:'
         BoxLayout:
@@ -160,7 +157,6 @@ login_kv = '''
             height: '50dp'
             CustomInput:
                 hint_text: 'password'
-                text: 'Password'
                 password: True
                 id: password
             IconToggle:
@@ -190,13 +186,19 @@ login_kv = '''
             size_hint_y: None
             height: self.texture_size[1] +10
             markup: True
-            text: "Don't you have an account  [ref=signin][color=#ff0000]Sign in[/color][/ref]"
+            text: "Don't have an account?  [u][ref=signin][color=#ff3000]Sign in[/color][/ref][/u]"
             on_ref_press: root.parent.go_to_page('sign_in_page')
+        Label:
+            text: '[u][ref=later]Later[/ref][/u]'
+            markup: True
+            color: .2,.5,1,1
+            on_ref_press: root.parent.go_to_page('home_page')
 '''
 firstpage_kv = '''
 <FirstPage>:
     on_pre_enter: root.manager.parent.allow_touch_drag= False
     Carousel:
+        id: caro
         canvas.before:
             Color:
                 rgba: get_color_from_hex('#ff9966')
@@ -209,11 +211,22 @@ firstpage_kv = '''
                 size_hint_y: None
                 height: '60dp'
                 text: 'Upload and store material on the cloud'
-                color: get_color_from_hex('#ff6600')
-            AutoCarousel:
-                AsyncImage:
-                AsyncImage:
-                AsyncImage:
+                color: 1,1,1,1
+                font_name: 'comicbd'
+            FloatLayout:
+                MyCarousel
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(1).jpg'
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(2).jpg'
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(7).jpg'
+            FloatLayout:
+                size_hint_y: None
+                height: '60dp'
+                MyCarouselButton
+                    text: 'next'
+                    on_release: caro.load_next()
             Image:
                 source: 'first2.png'
                 size_hint_y: None
@@ -223,12 +236,22 @@ firstpage_kv = '''
             Label:
                 size_hint_y: None
                 height: '60dp'
-                text: 'Upload and store material on the cloud'
-                color: get_color_from_hex('#ff6600')
-            AutoCarousel:
-                AsyncImage:
-                AsyncImage:
-                AsyncImage:
+                text: 'Create fast pdf'
+                color: 1,1,1,1
+                font_name: 'comicbd'
+            FloatLayout:
+                center: root.center
+                MyCarousel
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(4).jpg'
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(5).jpg'
+            FloatLayout:
+                size_hint_y: None
+                height: '60dp'
+                MyCarouselButton
+                    text: 'next'
+                    on_release: caro.load_next()
             Image:
                 source: 'first1.png'
                 size_hint_y: None
@@ -238,14 +261,43 @@ firstpage_kv = '''
             Label:
                 size_hint_y: None
                 height: '60dp'
-                text: 'Upload and store material on the cloud'
-                color: get_color_from_hex('#ff6600')
-            AutoCarousel:
-                AsyncImage:
-                AsyncImage:
-                AsyncImage:
+                text: 'Other tools'
+                color: 1,1,1,1
+                font_name: 'comicbd'
+            FloatLayout:
+                MyCarousel
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(3).jpg'
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(6).jpg'
+                    AsyncImage:
+                        source: 'data/showcase/Screenshot(8).jpg'
+            FloatLayout:
+                size_hint_y: None
+                height: '60dp'
+                MyCarouselButton
+                    text: 'sign in'
+                    on_release: root.manager.go_to_page('sign_in_page')
             Image:
                 source: 'first3.png'
                 size_hint_y: None
                 height: '60dp'
+
+<MyCarouselButton@NormalButton>:
+    size_hint: None,None
+    size: '120dp', '48dp'
+    center: self.parent.center
+    normal_color: .9,.5,0,1
+    color: 1,1,1,1
+
+<MyCarousel@AutoCarousel>:
+    center: self.parent.center
+    size_hint: None, None
+    size: '180dp', '300dp'
+    canvas.after:
+        Color:
+            rgba: 1,1,1,1
+        Line:
+            rectangle: [self.x, self.y, self.width, self.height]
+            width: 1.5
 '''
