@@ -17,17 +17,17 @@ https://mahart-studio.com/UniCloud
 
 ### Find Material of Couses
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(1).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(1).jpg">
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(7).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(7).jpg">
 </p>
 
 ### Different Tools
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(2).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/UniCloud/master/data/showcase/Screenshot(2).jpg">
 </p>
 
 

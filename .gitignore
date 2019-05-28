@@ -1,5 +1,4 @@
 *.png
-*.jpg
 *.jpeg
 *.pyc
 *.zip
@@ -9,7 +8,6 @@ to-do.txt
 __pycache__/
 .vscode/
 libs/
-data/
 fonts/
 cloud_handler/
 .buildozer/
