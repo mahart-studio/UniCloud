@@ -4,7 +4,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
 from kivy.vector import Vector
 
 from PIL import Image as PilImg
@@ -32,15 +32,6 @@ Builder.load_string('''
         RoundedRectangle:
             size: self.size
             pos: self.pos
-
-
-<ImageCroper>:
-    BoxLayout:
-        size_hint_y: None
-        height: '40dp'
-        Button:
-            text: 'Crop'
-            on_release: root.crop_image()
 
 
 <Croper>:
@@ -71,7 +62,7 @@ Builder.load_string('''
             Line:
                 points: root.v1_points   
                 width: root.line_width
-        
+
             Color:
                 rgba: 1,1,0,.2
             Rectangle:
@@ -372,7 +363,7 @@ class Croper(FloatLayout):
         
 
 class ImageCroper(BoxLayout):
-    source = StringProperty('/root/ed_artwork.jpg')
+    source = StringProperty('')
 
     def __init__(self, **k):
         super(ImageCroper, self).__init__(**k)
@@ -385,13 +376,14 @@ class ImageCroper(BoxLayout):
         self.add_widget(self.croper)
 
     def on_source(self, *a):
+        self.croper.source=self.source
         self.croper.image_cls.reload()
+        self.croper.set_init_value('')
 
-    def crop_image(self):
+    def crop(self):
         box, img = self.croper.get_box()
         img_crop = img.crop(box)
-        img_crop.save(path)
-
+        return img_crop
 
 
 

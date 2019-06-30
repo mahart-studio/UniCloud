@@ -22,6 +22,7 @@ from Cloud.main import root
 
 from kivy.storage.jsonstore import JsonStore
 from kivy import platform
+from kivy.clock import mainthread
 from kivy.app import App
 
 import os
@@ -31,9 +32,21 @@ if platform == 'android':
 
 from kivy.core.window import Window
 Window.softinput_mode='resize'
+Window.clear_color = (1,1,1,1)
 
 # from kivy.lang import Builder
 # root = Builder.load_file('settings.kv')
+
+@mainthread
+def request_permissions():
+    try:
+        from android.permissions import request_permissions
+        request_permissions(['CAMERA', 'READ_EXTERNAL_STORAGE',
+                            'WRITE_EXTERNAL_STORAGE'])
+    except:
+        from traceback import print_exc
+        print_exc()
+
 
 class UniCloud(App):
     def build(self):
@@ -41,6 +54,7 @@ class UniCloud(App):
         if platform == 'android':
             set_status_color('holo_orange_dark')
             remove_presplash()
+            request_permissions()
             self.start_app_service()
             
         self.creat_local_stores()

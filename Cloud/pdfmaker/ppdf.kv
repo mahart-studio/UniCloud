@@ -82,7 +82,7 @@
 						size_hint_y: None
 						height: self.minimum_height
 						col_force_default: True
-						col_default_width: (win.Window.width/3) -5
+						col_default_width: (self.width/3) -5
 
 		BoxLayout:
 			size_hint_y: None
@@ -98,7 +98,6 @@
 				Line:
 					points: [self.x, self.y+self.height, self.x+self.width, self.y+self.height]
 					width: 1.2
-
 
 			IconButton:
 				icon_source: atlas_path+'rotate'
@@ -426,7 +425,7 @@
 
 	SavedProjectPage:
 		name: 'saved page'
-		# on_pre_enter: root.reload_saved_project(self.saved_project_scroll)
+		on_pre_enter: root.reload_saved_project(self.saved_project_scroll)
 
 <TemplateButton@BoxLayout>:
 	orientation: 'vertical'
@@ -708,18 +707,6 @@
 					valign: 'middle'
 					halign: 'left'
 					padding: '20dp', 0
-					text: 'Name of file'
-				TextInput:
-					id: file_name
-					text: ''
-					size_hint_y: None
-					height: '40dp'
-					multiline: False
-				Label:
-					text_size: self.size
-					valign: 'middle'
-					halign: 'left'
-					padding: '20dp', 0
 					text: 'Name of Material'
 				TextInput:
 					id: material_name
@@ -741,6 +728,18 @@
 				BoxLayout:
 					size_hint_y: None
 					height: '40dp'
+					CheckBox:
+						id: first_page
+						active: True
+						size_hint_x: None
+						width: '96dp'
+					Label:
+						text: 'Set first page'
+						color: .2,.2,.2,1
+
+				BoxLayout:
+					size_hint_y: None
+					height: '40dp'
 					NormalButton:
 						shape: 'rounded_rectangle'
 						on_release: root.dismiss()
@@ -748,7 +747,7 @@
 					NormalButton:
 						shape: 'rounded_rectangle'
 						text: 'Save'
-						on_release: root.activate(root, file_name.text, author.text, material_name.text)
+						on_release: root.activate(root, author.text, material_name.text, first_page.active)
 
 
 <ActionBar1@BoxLayout>:
@@ -821,6 +820,16 @@
 	background_color: 0,0,0,.7
 	source_image_cls: root.source_image_cls
 	source_image: root.source_image
+	container: container
+	crop_button: crop_button
+	BoxLayout:
+		id: container
+		orientation: 'vertical'
+		Button:
+			id: crop_button
+			text: 'Crop'
+			size_hint_y: None
+			height: '40dp'
 
 
 # just make an instance of the alert popup

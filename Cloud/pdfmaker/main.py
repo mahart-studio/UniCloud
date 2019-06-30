@@ -4,7 +4,6 @@
 
 import kivy
 from kivy import platform
-from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.behaviors import DragBehavior
@@ -15,7 +14,6 @@ from kivy.uix.modalview import ModalView
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, NumericProperty
 from kivy.utils import get_color_from_hex
 from kivy.storage.jsonstore import JsonStore
-from kivy.clock import Clock
 from kivy.lang import Builder
 
 from kivy.garden.filechooserthumbview import FileChooserThumbView
@@ -28,7 +26,7 @@ from mahartstudios.widgets.alertpopup import AlertPopup
 if platform == 'android':
 	from mahartstudios.android.notification import fast_toast
 
-from template import Templates, UniCloudPdf
+from .template import Templates, UniCloudPdf
 from .crop import ImageCroper
 from .filechooser import ThumbChooser
 
@@ -37,9 +35,10 @@ from PIL import Image as PilImage
 from PIL import ImageEnhance
 
 # python module
-import os, os.path
+import os
 import shutil
 from functools import partial
+from threading import Thread
 import time
 
 
@@ -77,10 +76,6 @@ class PdfScreens(ScreenManager):
 		root_cls = self
 
 		global float_lay
-		global manager
-		global pics_grid
-		manager = self
-		pics_grid = self.ids.pics_grid
 		float_lay = self.ids.float_lay
 		self.pics_grid = self.ids.pics_grid
 
@@ -95,6 +90,7 @@ class PdfScreens(ScreenManager):
 		self.image_viewer = ImageViewer()
 		self.rotate_modal = RotateModal(apply_rotate=self.apply_rotate)
 		self.crop_modal = CropModal()
+		self.crop_modal.crop_button.bind(on_release=self.crop_image)
 
 		choose_picture = self.page_options.choose_pic_btn
 		choose_picture.bind(on_release=partial(self.go_page, 'file'))
@@ -110,24 +106,12 @@ class PdfScreens(ScreenManager):
 		
 		self.addbutton.bind(on_release=self.go_file)
 
-		Clock.schedule_once(self.create_store_app_cls)
+		Thread(target=self.create_store_app_cls).start()
 
 		#dictianary of real image directory
 		self.real_images_dir = {}
 
-		page = self.get_screen('saved page')
-		Clock.schedule_once(lambda dt: self.reload_saved_project(page.saved_project_scroll))
-
-		'''
-		# Just put some default picture in view
-		image_list = os.listdir('/root/Desktop/Podcasts/X-Force/pics')
-		image_list =[os.path.join('/root/Desktop/Podcasts/X-Force/pics', image) 
-						for image in image_list]
-
-		Clock.schedule_once(lambda dt: self.add_more(image_list))
-		'''
-
-	def create_store_app_cls(self, dt):
+	def create_store_app_cls(self):
 		global app_cls
 		app_cls = kivy.app.App.get_running_app()
 
@@ -171,7 +155,7 @@ class PdfScreens(ScreenManager):
 
 				# Add to the widget view *note using the thumnail for view instead of real image 
 				pdf_image = PdfImage(source=thumbnail_path, tag_num=str(len(self.pics_grid.children)))
-				
+
 				self.pics_grid.add_widget(pdf_image, index=1)		
 				pdf_image.bind(state=self.selection_made)
 		else:
@@ -246,7 +230,7 @@ class PdfScreens(ScreenManager):
 			fast_toast('Noting to delete')
 	
 
-	def export_pdf(self, modal, file_name, author_name, material_name):
+	def export_pdf(self, modal, author_name, material_name, first_page):
 		# store author name for later
 		pdf_store.put('author_name', name=author_name)
 
@@ -256,6 +240,8 @@ class PdfScreens(ScreenManager):
 		pdf = UniCloudPdf()
 
 		template = Templates(pdf_cls=pdf)
+		if first_page:
+			template.template3(title=material_name, author=author_name)
 
 		for child in children:
 			if child.type =='pdf_image':
@@ -267,14 +253,13 @@ class PdfScreens(ScreenManager):
 				template_func = getattr(template, child.template_func)
 				template_func(*child.data_list)
 
-
-		pdf.output(os.path.join(os.path.dirname(__file__),"{}".format(file_name)), "F")
+		filename = material_name.strip()
+		pdf.output(os.path.join('.',"{}".format(filename)), "F")
 		
 		modal.dismiss()		#close The popup
 		self.current = 'saved_pdf'	# move to next page
-		self.ids.saved_file_name.text = file_name +'.pdf'
-		self.clear_all_widget()
-		
+		self.ids.saved_file_name.text = filename +'.pdf'
+
 
 	def apply_rotate(self, image, type):
 		'rotate an image it takes type temp or real'
@@ -308,7 +293,6 @@ class PdfScreens(ScreenManager):
 		if self.selected is None:
 			print('[Error  ]  No valid selection')
 			fast_toast('No valid selection made')
-
 
 		elif self.selected is not None and len(self.pics_grid.children) != 1:
 			if self.selected.type == 'pdf_image':
@@ -471,7 +455,7 @@ class PdfScreens(ScreenManager):
 		contrast = ImageEnhance.Contrast(image)
 		bright = ImageEnhance.Brightness(image)
 
-		__, filename = os.path.split(image_source)
+		filename = os.path.split(image_source)[1]
 		save_path = os.path.join(os.path.join(self.data_dir, '.UniCloud/.images'), filename)
 
 		if index == 1:
@@ -706,20 +690,27 @@ class PdfScreens(ScreenManager):
 		self.add_more([fn])
 
 	def crop_manager(self):
-
 		if self.selected is None:
 			print('[Error  ]  No valid selection')
 			fast_toast('No valid selection made')
-
 		else:
 			if self.selected.type == 'pdf_image':
+				self.crop_modal.croper.source = self.get_real_image(self.selected.source)
 				self.crop_modal.open()
-				self.crop_modal.croper.source= self.get_real_image(self.selected.source)
-
 			else:
 				print('Toast can\'t crop a custom page')
 				fast_toast('Can\'t crop a custom page')
 
+	def crop_image(self, *a):
+		filename = self.crop_modal.croper.source
+		save_path = os.path.join(os.path.join(self.data_dir, '.UniCloud/.images'), filename)
+		pill_img = self.crop_modal.croper.crop()
+		pill_img.save(save_path)
+		thumbnail_path = self.make_thumbnails(save_path)
+		#then load the image
+		self.selected.source = thumbnail_path
+		self.selected.image_cls.reload()
+		self.crop_modal.dismiss()
 
 
 class SavedProjectButton(DropButton):
@@ -836,15 +827,12 @@ class RotateModal(ModalView):
 class CropModal(ModalView):
 
 	croper = ObjectProperty(None)
+	crop_button = ObjectProperty(None)
 
 	def __init__(self, **kwargs):
 		super(CropModal, self).__init__(**kwargs)
 		self.croper =  ImageCroper()
-		Clock.schedule_once(self.add_image_croper,1)
-		
-	def add_image_croper(self, *a):
-		self.add_widget(self.croper)
-
+		self.ids.container.add_widget(self.croper)
 
 
 class SaveModal(ModalView):
@@ -875,14 +863,3 @@ class PdfMaker(Screen):
 	def on_pre_leave(self):
 		self.pdf_screens.clear_all_widget()
 
-class PdfApp(App):
-
-	def build(self):
-		return PdfScreens()
-
-	def on_pause(self):
-		return True
-
-
-if __name__ == '__main__':
-	PdfApp().run()

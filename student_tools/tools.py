@@ -231,7 +231,6 @@ class Result_view(ScreenBase):
         self.gp_view = self.ids.gp_view
         self.total_unit = self.ids.total_unit
         self.grid_lay = self.ids.grid_lay
-        self.result_list_option = self.ids.result_list_option
 
 
     def set_values(self, gp, sum_of_unit, course_values):
