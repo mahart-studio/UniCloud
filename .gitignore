@@ -3,6 +3,7 @@
 *.pyc
 *.zip
 *.gif
+*.json
 to-do.txt
 pyc.py
 __pycache__/
