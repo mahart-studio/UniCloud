@@ -14,7 +14,7 @@ kv_string = '''
 <DownloadPage>:
     on_pre_enter: root.manager.parent.allow_touch_drag= True
     on_leave: android_tab.default_tab = 0
-    on_back_button: app.root.toggle_state(False)
+    on_back_button: app.root.toggle_state()
     canvas.before:
         Color:
             rgba: 1,1,1,1
