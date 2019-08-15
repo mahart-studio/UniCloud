@@ -108,7 +108,7 @@ signin_kv = '''
             text: '[u][color=3088ff][ref=later]Later[/ref][/color][/u]'
             markup: True
             color: .2,.5,1,1
-            on_ref_press: root.parent.go_to_page('home_page')
+            on_ref_press: root.parent.go_to_page('home_page'); app.unicloud_store.put('user', first_time=False)
 
 '''
 
@@ -192,7 +192,7 @@ login_kv = '''
             text: '[u][ref=later]Later[/ref][/u]'
             markup: True
             color: .2,.5,1,1
-            on_ref_press: root.parent.go_to_page('home_page')
+            on_ref_press: root.parent.go_to_page('home_page'); app.unicloud_store.put('user', first_time=False)
 '''
 firstpage_kv = '''
 <FirstPage>:
@@ -212,7 +212,7 @@ firstpage_kv = '''
                 height: '60dp'
                 text: 'Upload and store material on the cloud'
                 color: 1,1,1,1
-                font_name: 'comicbd'
+                bolc: True
             FloatLayout:
                 MyCarousel
                     AsyncImage:
@@ -238,7 +238,7 @@ firstpage_kv = '''
                 height: '60dp'
                 text: 'Create fast pdf'
                 color: 1,1,1,1
-                font_name: 'comicbd'
+                markup: True
             FloatLayout:
                 center: root.center
                 MyCarousel
@@ -263,7 +263,7 @@ firstpage_kv = '''
                 height: '60dp'
                 text: 'Other tools'
                 color: 1,1,1,1
-                font_name: 'comicbd'
+                bold: True
             FloatLayout:
                 MyCarousel
                     AsyncImage:
