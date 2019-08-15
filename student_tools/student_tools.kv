@@ -1,15 +1,6 @@
 #:import Factory kivy.factory.Factory
-#:import ScreenManager kivy.uix.screenmanager
-#:import Screen kivy.uix.screenmanager
-#:import Popup kivy.uix.popup
-#:import Window kivy.core.window
 #:import Effects mahartstudios.effects.Effects
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import os.path, os
-
-<Label>:
-    font_name: 'comic'
-	# color: 0,0,0,1
 
 <Result_Button>:
     size_hint: (1, None)
@@ -129,7 +120,7 @@
             ImgBtn:
                 size_hint_x: None
                 width: '50dp'
-                on_release: app.root.toggle_state(True)
+                on_release: app.root.toggle_state()
                 source: 'ic_action_list.png'
 
             Label:
@@ -554,7 +545,7 @@
 
 <Matrix_detector>:
     name: 'detector_page'
-    on_back_button: app.root.toggle_state(False)
+    on_back_button: app.root.toggle_state()
     BoxLayout:
         orientation: 'vertical'
         canvas.before:
@@ -570,7 +561,7 @@
             ImgBtn:
                 size_hint_x: None
                 width: '50dp'
-                on_release: app.root.toggle_state(False)
+                on_release: app.root.toggle_state()
                 source: 'arrow_back1.png'
                 pos_hint: {'center_x': .7, 'center_y': .5}
 
@@ -816,7 +807,7 @@
             ImgBtn:
                 size_hint_x: None
                 width: '50dp'
-                on_release: app.root.toggle_state(True)
+                on_release: app.root.toggle_state()
                 source: 'ic_action_list.png'
                 pos_hint: {'center_x': .7, 'center_y': .5}
 
