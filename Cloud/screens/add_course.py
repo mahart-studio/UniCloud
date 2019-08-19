@@ -7,8 +7,7 @@ class Add_Course(ScreenBase):
     selected_file =  StringProperty('')
 
     def __init__(self, **kwargs):
-        Builder.load_string(kv_string)
-        
+        Builder.load_string(kv_string)     
         super(Add_Course, self).__init__(**kwargs)
 
 

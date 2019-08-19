@@ -7,14 +7,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.recycleview import RecycleView
 
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
 from kivy.lang import Builder
 from kivy.storage.jsonstore import JsonStore
 from kivy.properties import (StringProperty, ObjectProperty,
                             NumericProperty, BooleanProperty,
                             ListProperty)
 from kivy.core.window import Window
-
 
 # kivy garden
 from kivy.garden.androidtabs import AndroidTabsBase
@@ -108,7 +107,7 @@ class MaterialOptions(ModalView):
         self.done = False
         self.status = 0
         self.download_manager = self.ids._manager_
-        self.download_cls = None
+        self.downloader_cls = None
 
 
     def ccc(self):
@@ -126,21 +125,19 @@ class MaterialOptions(ModalView):
         filepath = 'Unicloud/downloads' + self.material_data['filename']
         google_id = self.material_data['google_id']
 
-        self.download_cls = Downloader(google_id, filepath, self.ids.pb, self.ids._manager_, self.downloading_done)
-        self.download_cls.start()
+        self.downloader_cls = Downloader(google_id, filepath, self.ids.pb, self.downloading_done)
+        self.downloader_cls.start()
+        self.download_manager.current='downloading'
 
     def take_to_download_page(self):
         download_page = screens.get_screen('download_page')
         grid = download_page.ids.downloading_grid
 
         self.downloading_btn = DownloadingButton()
-        self.downloading_btn.download_cls = self.downloading_cls
+        self.downloading_btn.downloader_cls = self.downloading_cls
 
-    #    pause download and start with another progress bar
-        self.download_cls.pause()
-        self.download_cls.progress_bar = self.downloading_btn.ids.pb
-        self.download_cls.countinue()
-
+        # change the progress bar of the downloader cls
+        self.downloader_cls.progress_bar = self.downloading_btn.ids.pb
         grid.add_widget(self.downloading_btn)
 
     def download_later(self, data):
@@ -153,10 +150,11 @@ class MaterialOptions(ModalView):
             grid = page.ids.download_later
             grid.data.append({'material_data': data})
             grid.refresh_from_data()
-    
+
+    @mainthread
     def downloading_done(self,filepath):
         print('Toast downloading done',filepath)
-        fast_toast('downloading done')
+        fast_toast('{} donwloader'.format(filepath))
         if hasattr(self, 'downloading_btn'):
             download_page = screens.get_screen('download_page')
             grid = download_page.ids.downloading_grid
@@ -165,7 +163,7 @@ class MaterialOptions(ModalView):
 
 
 class DownloadingButton(NormalButton):
-    download_cls = ObjectProperty()
+    downloader_cls = ObjectProperty()
 
 
 class Manager(ScreenManager):
@@ -265,19 +263,3 @@ class Manager(ScreenManager):
                 pass
 
 root = Builder.load_file('cloud.kv')
-
-
-class Student_db_():
-    def build(self):
-        self.title = 'UniCloud'
-        return 
-
-    def on_stop(self):
-        unicloud_store.put('user', first_time=False)
-        def delete_pic(arg, dir, files):
-            for file in files:
-                full_path = os.path.join(dir, file)
-                if os.path.isfile(full_path):
-                    os.remove(full_path)
-
-        os.path.walk (os.path.join(self.user_data_dir, '.UniCloud'), delete_pic, 0)

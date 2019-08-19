@@ -13,7 +13,8 @@ class Course_Page(ScreenBase):
         template = '[color=#ffffff][b]Department[/b]: {}[/color]\n[color=#ffffcc][b]Faculty[/b]:          {}[/color]'
         self.dept_fal.text = template.format('Computer Science', 'Sciences')
 
-        self.ids.course_code.text = "[size=20dp][font=comic][color=#ffffff][b]ABS 101[/b][/font][/size]\n[size=15dp][color=#99330088]Intro to Computer Science[/color][/size][/color]"
+        self.ids.course_code.text = "[size=20dp][color=#ffffff][b]ABS 101[/b][/size]\n[size=15dp]\
+                                    [color=#99330088]Intro to Computer Science[/color][/size][/color]"
 
         recycle_data=[]
 

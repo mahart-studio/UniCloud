@@ -8,12 +8,6 @@
 #:import os os
 #:import partial functools.partial
 
-
-# override the default property for file chooser
-# a realy bad idea but i had to do it anyway
-<Label>:
-	color: 0,0,0,1
-
 #:set atlas_path 'atlas://images/'
 
 
@@ -21,8 +15,8 @@
 	Screen:
 		name: 'home'
 		on_leave:
-			if root.current!='file' or root.current!='template chooser' or root.current!='saved page': root.project_name='new'
-
+			if root.current!='file' or root.current!='template chooser' or root.current!='saved page': \
+			root.project_name='new'
 		BoxLayout:
 			orientation: 'vertical'
 			canvas:
@@ -956,7 +950,6 @@
 				valign: 'center'
 				font_size: '22dp'
 				bold: True
-				font_name: 'comic'
 		ScrollView:
 			GridLayout:
 				size_hint_y: None
@@ -992,12 +985,12 @@
 				halign: 'left'
 				padding: '20dp','10dp'
 				color: 0,0,0,1
-				font_name: 'comic'
 			Label:
 				text: root.created_time
 				text_size: self.size
 				valign: 'center'
 				halign: 'left'
+				font_size: '13sp'
 				padding: '20dp',0
 				color: .4,.4,.4,1
 

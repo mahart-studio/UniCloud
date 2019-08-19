@@ -24,7 +24,7 @@ class HomePage(ScreenBase):
             for course in range(10):
                 course_code = 'ABS 101'
                 course_title = 'Intro to Computer Science......'
-                template = "[size=16dp][font=comic][color=#444444]{}[/color][/font][/size]\n" \
+                template = "[size=16dp][color=#444444]{}[/color][/size]\n" \
                         "[color=#666666][size=14dp]{}[/size][/color]"
         
                 data = {}
@@ -71,20 +71,17 @@ kv_string = '''
 
                 IconButton:
                     normal_color: get_color_from_hex('#ff9966')
-                    size_hint: None, 1
-                    size: '50dp', '32dp'
+                    size_hint_x: None
+                    width: '50dp'
                     icon_source: 'menu.png'
-                    on_release: root.manager.parent.parent.toggle_state(False)
-
+                    on_release: root.manager.parent.parent.toggle_state()
                 Image:
                     source: 'ic_action_cloudy.png'
                     size: '32dp', '32dp'
                     size_hint_x: None
-
                 Label:
                     text: '[b]UniCloud[/b]'
                     font_size: '22dp'
-                    font_name: 'comic'
                     text_size: self.size
                     color: 1,1,1,1
                     markup: True

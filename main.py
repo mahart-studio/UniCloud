@@ -17,6 +17,12 @@ resource_add_path('Cloud')
 resource_add_path('Cloud/pdfmaker')
 resource_add_path('student_tools')
 
+# register custom font
+fn_regular = 'comic.ttf'
+fn_bold = 'comicbd.ttf'
+from kivy.core.text import Label as CoreLabel
+CoreLabel.register('comic', fn_regular=fn_regular,fn_bold=fn_bold)
+
 # our major imports
 from Cloud.main import root
 
@@ -29,7 +35,12 @@ import os
 
 if platform == 'android':
     from mahartstudios.android.api import set_status_color, remove_presplash
-
+    from android.permissions import request_permissions
+    remove_presplash()
+    set_status_color('holo_orange_dark')
+    request_permissions(['CAMERA', 'READ_EXTERNAL_STORAGE',
+                        'WRITE_EXTERNAL_STORAGE'])
+                
 from kivy.core.window import Window
 Window.softinput_mode='resize'
 Window.clear_color = (1,1,1,1)
@@ -37,26 +48,11 @@ Window.clear_color = (1,1,1,1)
 # from kivy.lang import Builder
 # root = Builder.load_file('settings.kv')
 
-@mainthread
-def request_permissions():
-    try:
-        from android.permissions import request_permissions
-        request_permissions(['CAMERA', 'READ_EXTERNAL_STORAGE',
-                            'WRITE_EXTERNAL_STORAGE'])
-    except:
-        from traceback import print_exc
-        print_exc()
-
 
 class UniCloud(App):
     def build(self):
-
         if platform == 'android':
-            set_status_color('holo_orange_dark')
-            remove_presplash()
-            request_permissions()
             self.start_app_service()
-            
         self.creat_local_stores()
         return root
 
@@ -80,7 +76,7 @@ class UniCloud(App):
         pass
 
     def on_stop(self):
-        self.unicloud_store.put('user', first_time=False)
+        pass
 
 if __name__ == "__main__":
     UniCloud().run()

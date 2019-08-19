@@ -137,7 +137,7 @@ class PdfScreens(ScreenManager):
 			os.mkdir(os.path.join(self.data_dir, '.UniCloud/.templates'))
 			os.mkdir(os.path.join(self.data_dir, 'saved project'))
 		except Exception as e:
-			print('create temp dir',e)
+			print('Save Error {}'.format(e))
 	
 
 	def add_more(self, selections):
